@@ -2,8 +2,12 @@
   "name": "@pokesol/pokesol-text-parser",
   "version": "0.1.0",
   "description": "a pokesol-text parser",
-  "main": "dist/index.js",
-  "type": "dist/index.d.ts",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": "./dist/index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
