@@ -1,0 +1,80 @@
+POKESOL_TEXT :=
+  line1=LINE1 '\n'
+  line2=LINE2 '\n'
+  line3=LINE3 '\n'
+  line4=LINE4 '\n'
+  line5=LINE5
+
+
+// 1 行目
+
+LINE1                 := POKEMON_AND_ITEM_LINE | POKEMON_LINE
+POKEMON_AND_ITEM_LINE := pokemon=POKEMON '@' item=ITEM
+POKEMON_LINE          := pokemon=POKEMON
+
+POKEMON               := POKEMON_VALUE
+ITEM                  := ITEM_VALUE
+
+POKEMON_VALUE         := '[^@^\n]+'
+ITEM_VALUE            := '[^@^\n]+'
+
+
+// 2 行目
+
+LINE2                     := ABILITY_AND_TERATYPE_LINE | ABILITY_LINE | TERATYPE_LINE
+ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' ' teratype=TERATYPE
+ABILITY_LINE              := ability=ABILITY
+TERATYPE_LINE             := teratype=TERATYPE
+
+ABILITY                   := '特性:' value=ABILITY_VALUE
+TERATYPE                  := 'テラスタル:' value=TERATYPE_VALUE
+
+ABILITY_VALUE             := '[ぁ-んァ-ンー]+'
+TERATYPE_VALUE            := '[ぁ-んァ-ンー]+'
+
+
+// 3 行目
+
+LINE3              := NATURE_AND_IV_LINE | NATURE_LINE | IV_LINE
+NATURE_AND_IV_LINE := nature=NATURE ' ' iv=IV
+NATURE_LINE        := nature=NATURE
+IV_LINE            := iv=IV
+
+NATURE             := '性格:' value=NATURE_VALUE
+IV                 := '個体値:' h=IV_H? ' '? a=IV_A? ' '? b=IV_B? ' '? c=IV_C? ' '? d=IV_D? ' '? s=IV_S?
+IV_H               := 'H' value=IV_VALUE
+IV_A               := 'A' value=IV_VALUE
+IV_B               := 'B' value=IV_VALUE
+IV_C               := 'C' value=IV_VALUE
+IV_D               := 'D' value=IV_VALUE
+IV_S               := 'S' value=IV_VALUE
+
+NATURE_VALUE       := '[ぁ-ん]+'
+IV_VALUE           := '0|[1-9][0-9]*'
+
+
+// 4 行目
+
+LINE4         := STATS_LINE
+STATS_LINE    := STATS
+
+STATS         := h=STAT '-' a=STAT '-' b=STAT '-' c=STAT '-' d=STAT '-' s=STAT
+STAT          := ACTUAL_AND_EV | ACTUAL
+ACTUAL_AND_EV := value=ACTUAL_VALUE '\(' ev=EV_VALUE '\)'
+ACTUAL        := value=ACTUAL_VALUE
+
+ACTUAL_VALUE  := '[1-9][0-9]*'
+EV_VALUE      := '[1-9][0-9]*'
+
+
+// 5 行目
+
+LINE5         := MOVES_LINE
+MOVES_LINE    := FOUR_MOVES | THREE_MOVES | TWO_MOVES | ONE_MOVE
+
+FOUR_MOVES    := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE '/' move4=MOVE_VALUE
+THREE_MOVES   := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE
+TWO_MOVES     := move1=MOVE_VALUE '/' move2=MOVE_VALUE
+ONE_MOVE      := move1=MOVE_VALUE
+
+MOVE_VALUE    := '[０-９ぁ-んァ-ンー・]+'

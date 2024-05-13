@@ -9,7 +9,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tspeg src/grammar.peg src/parser.ts && tsc",
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
