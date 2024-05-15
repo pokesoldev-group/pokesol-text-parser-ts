@@ -10,47 +10,37 @@ then:
 ```javascript
 let { parse } = await import("./dist/index.js")
 
-console.dir(parse("サンダー@こだわりメガネ\n特性:せいでんき テラスタル:でんき\n性格:ひかえめ 個体値:A31 S0\n154-170-100(100)-72-120-105\n１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ"), { depth: null })
-
+parse("サンダー@こだわりメガネ\n特性:せいでんき テラスタル:でんき\n性格:ひかえめ 個体値:A31 S0\n154-170-100(100)-72-120-105\n１０まんボルト/ねっぷう/ぼうふう/ボルトチェ ンジ")
 {
-  ast: {
-    kind: 'POKESOL_TEXT',
-    line1: { kind: 'POKEMON_AND_ITEM_LINE', pokemon: 'サンダー', item: 'こだわりメガネ' },
-    line2: {
-      kind: 'ABILITY_AND_TERATYPE_LINE',
-      ability: { kind: 'ABILITY', value: 'せいでんき' },
-      teratype: { kind: 'TERATYPE', value: 'でんき' }
-    },
-    line3: {
-      kind: 'NATURE_AND_IV_LINE',
-      nature: { kind: 'NATURE', value: 'ひかえめ' },
-      iv: {
-        kind: 'IV',
-        h: null,
-        a: { kind: 'IV_A', value: '31' },
-        b: null,
-        c: null,
-        d: null,
-        s: { kind: 'IV_S', value: '0' }
-      }
-    },
-    line4: {
-      kind: 'STATS',
-      h: { kind: 'ACTUAL', value: '154' },
-      a: { kind: 'ACTUAL', value: '170' },
-      b: { kind: 'ACTUAL_AND_EV', value: '100', ev: '100' },
-      c: { kind: 'ACTUAL', value: '72' },
-      d: { kind: 'ACTUAL', value: '120' },
-      s: { kind: 'ACTUAL', value: '105' }
-    },
-    line5: {
-      kind: 'FOUR_MOVES',
-      move1: '１０まんボルト',
-      move2: 'ねっぷう',
-      move3: 'ぼうふう',
-      move4: 'ボルトチェンジ'
-    }
+  pokemonName: 'サンダー',
+  itemName: 'こだわりメガネ',
+  abilityName: 'せいでんき',
+  terastalName: 'でんき',
+  natureName: 'ひかえめ',
+  ivs: {
+    hp: 31,
+    attack: 31,
+    defense: 31,
+    specialAttack: 31,
+    specialDefense: 31,
+    speed: 0
   },
-  errs: []
+  evs: {
+    hp: 0,
+    attack: 0,
+    defense: 100,
+    specialAttack: 0,
+    specialDefense: 0,
+    speed: 0
+  },
+  actualValue: {
+    hp: 154,
+    attack: 170,
+    defense: 100,
+    specialAttack: 72,
+    specialDefense: 120,
+    speed: 105
+  },
+  moveNames: [ '１０まんボルト', 'ねっぷう', 'ぼうふう', 'ボルトチェンジ' ]
 }
 ```
