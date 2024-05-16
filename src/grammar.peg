@@ -15,8 +15,8 @@ POKEMON_LINE          := pokemon=POKEMON
 POKEMON               := POKEMON_VALUE
 ITEM                  := ITEM_VALUE
 
-POKEMON_VALUE         := '[^@^\n]+'
-ITEM_VALUE            := '[^@^\n]+'
+POKEMON_VALUE         := '[0-9a-zA-Zぁ-んァ-ヶー一-龠・()♂♀%]+'
+ITEM_VALUE            := '[ぁ-んァ-ヶ一]+'
 
 
 // 2 行目
@@ -29,8 +29,8 @@ TERATYPE_LINE             := teratype=TERATYPE
 ABILITY                   := '特性:' value=ABILITY_VALUE
 TERATYPE                  := 'テラスタル:' value=TERATYPE_VALUE
 
-ABILITY_VALUE             := '[ぁ-んァ-ンー]+'
-TERATYPE_VALUE            := '[ぁ-んァ-ンー]+'
+ABILITY_VALUE             := '[ぁ-んァ-ヶー]+'
+TERATYPE_VALUE            := '[ぁ-んァ-ヶー]+'
 
 
 // 3 行目
@@ -77,4 +77,4 @@ THREE_MOVES   := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE
 TWO_MOVES     := move1=MOVE_VALUE '/' move2=MOVE_VALUE
 ONE_MOVE      := move1=MOVE_VALUE
 
-MOVE_VALUE    := '[０-９ぁ-んァ-ンー・]+'
+MOVE_VALUE    := '[０-９ぁ-んァ-ヶー・]+'

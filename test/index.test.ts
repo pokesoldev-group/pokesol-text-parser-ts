@@ -132,4 +132,58 @@ describe("parse", () => {
 ねっぷう/ボルトチェンジ`
     expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["ねっぷう", "ボルトチェンジ"]})
   })
+
+  test("with pokemon name with kanji", () => {
+    const pokesolText = `バドレックス(黒)@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "バドレックス(黒)"})
+  })
+
+  test("with pokemon name with symbol (♂)", () => {
+    const pokesolText = `パフュートン(♂)@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "パフュートン(♂)"})
+  })
+
+  test("with pokemon name with symbol (・)", () => {
+    const pokesolText = `カプ・コケコ@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "カプ・コケコ"})
+  })
+
+  test("with pokemon name with symbol (%)", () => {
+    const pokesolText = `ジガルデ(50%)@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(50%)"})
+  })
+
+  test("with pokemon name with number", () => {
+    const pokesolText = `ジガルデ(10%)@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(10%)"})
+  })
+
+  test("with pokemon name with alphabet", () => {
+    const pokesolText = `ミュウツー(メガX)@こだわりメガネ
+特性:せいでんき テラスタル:でんき
+性格:ひかえめ 個体値:H26 A27 B28 C29 D30 S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト/ねっぷう/ぼうふう/ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ミュウツー(メガX)"})
+  })
 })

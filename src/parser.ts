@@ -12,8 +12,8 @@
 * POKEMON_LINE          := pokemon=POKEMON
 * POKEMON               := POKEMON_VALUE
 * ITEM                  := ITEM_VALUE
-* POKEMON_VALUE         := '[^@^\n]+'
-* ITEM_VALUE            := '[^@^\n]+'
+* POKEMON_VALUE         := '[0-9a-zA-Zぁ-んァ-ヶー一-龠・()♂♀%]+'
+* ITEM_VALUE            := '[ぁ-んァ-ヶ一]+'
 * // 2 行目
 * LINE2                     := ABILITY_AND_TERATYPE_LINE | ABILITY_LINE | TERATYPE_LINE
 * ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' ' teratype=TERATYPE
@@ -21,8 +21,8 @@
 * TERATYPE_LINE             := teratype=TERATYPE
 * ABILITY                   := '特性:' value=ABILITY_VALUE
 * TERATYPE                  := 'テラスタル:' value=TERATYPE_VALUE
-* ABILITY_VALUE             := '[ぁ-んァ-ンー]+'
-* TERATYPE_VALUE            := '[ぁ-んァ-ンー]+'
+* ABILITY_VALUE             := '[ぁ-んァ-ヶー]+'
+* TERATYPE_VALUE            := '[ぁ-んァ-ヶー]+'
 * // 3 行目
 * LINE3              := NATURE_AND_IV_LINE | NATURE_LINE | IV_LINE
 * NATURE_AND_IV_LINE := nature=NATURE ' ' iv=IV
@@ -54,7 +54,7 @@
 * THREE_MOVES   := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE
 * TWO_MOVES     := move1=MOVE_VALUE '/' move2=MOVE_VALUE
 * ONE_MOVE      := move1=MOVE_VALUE
-* MOVE_VALUE    := '[０-９ぁ-んァ-ンー・]+'
+* MOVE_VALUE    := '[０-９ぁ-んァ-ヶー・]+'
 */
 type Nullable<T> = T | null;
 type $$RuleType<T> = () => Nullable<T>;
@@ -368,10 +368,10 @@ export class Parser {
         return this.matchITEM_VALUE($$dpth + 1, $$cr);
     }
     public matchPOKEMON_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<POKEMON_VALUE> {
-        return this.regexAccept(String.raw`(?:[^@^\n]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[0-9a-zA-Zぁ-んァ-ヶー一-龠・()♂♀%]+)`, "", $$dpth + 1, $$cr);
     }
     public matchITEM_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ITEM_VALUE> {
-        return this.regexAccept(String.raw`(?:[^@^\n]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶ一]+)`, "", $$dpth + 1, $$cr);
     }
     public matchLINE2($$dpth: number, $$cr?: ErrorTracker): Nullable<LINE2> {
         return this.choice<LINE2>([
@@ -460,10 +460,10 @@ export class Parser {
             });
     }
     public matchABILITY_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ABILITY_VALUE> {
-        return this.regexAccept(String.raw`(?:[ぁ-んァ-ンー]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶー]+)`, "", $$dpth + 1, $$cr);
     }
     public matchTERATYPE_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<TERATYPE_VALUE> {
-        return this.regexAccept(String.raw`(?:[ぁ-んァ-ンー]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶー]+)`, "", $$dpth + 1, $$cr);
     }
     public matchLINE3($$dpth: number, $$cr?: ErrorTracker): Nullable<LINE3> {
         return this.choice<LINE3>([
@@ -832,7 +832,7 @@ export class Parser {
             });
     }
     public matchMOVE_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<MOVE_VALUE> {
-        return this.regexAccept(String.raw`(?:[０-９ぁ-んァ-ンー・]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[０-９ぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
     }
     public test(): boolean {
         const mrk = this.mark();
