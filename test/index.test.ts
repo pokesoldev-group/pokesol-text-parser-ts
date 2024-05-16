@@ -43,6 +43,15 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual(expected)
   })
 
+  test("with full values with space", () => {
+    const pokesolText = `サンダー   @   こだわりメガネ
+特性:せいでんき   テラスタル:でんき
+性格:ひかえめ   個体値:H26   A27   B28   C29   D30   S25
+164(12)-99(12)-104(4)-191(236)-110(4)-147(236)
+１０まんボルト   /   ねっぷう   /   ぼうふう   /   ボルトチェンジ`
+    expect(parse(pokesolText)).toEqual(expected)
+  })
+
   test("without item", () => {
     const pokesolText = `サンダー
 特性:せいでんき テラスタル:でんき

@@ -8,7 +8,7 @@
 *   line5=LINE5
 * // 1 行目
 * LINE1                 := POKEMON_AND_ITEM_LINE | POKEMON_LINE
-* POKEMON_AND_ITEM_LINE := pokemon=POKEMON '@' item=ITEM
+* POKEMON_AND_ITEM_LINE := pokemon=POKEMON _ '@' _ item=ITEM
 * POKEMON_LINE          := pokemon=POKEMON
 * POKEMON               := POKEMON_VALUE
 * ITEM                  := ITEM_VALUE
@@ -16,7 +16,7 @@
 * ITEM_VALUE            := '[ぁ-んァ-ヶ一]+'
 * // 2 行目
 * LINE2                     := ABILITY_AND_TERATYPE_LINE | ABILITY_LINE | TERATYPE_LINE
-* ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' ' teratype=TERATYPE
+* ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' '+ teratype=TERATYPE
 * ABILITY_LINE              := ability=ABILITY
 * TERATYPE_LINE             := teratype=TERATYPE
 * ABILITY                   := '特性:' value=ABILITY_VALUE
@@ -25,11 +25,11 @@
 * TERATYPE_VALUE            := '[ぁ-んァ-ヶー]+'
 * // 3 行目
 * LINE3              := NATURE_AND_IV_LINE | NATURE_LINE | IV_LINE
-* NATURE_AND_IV_LINE := nature=NATURE ' ' iv=IV
+* NATURE_AND_IV_LINE := nature=NATURE ' '+ iv=IV
 * NATURE_LINE        := nature=NATURE
 * IV_LINE            := iv=IV
 * NATURE             := '性格:' value=NATURE_VALUE
-* IV                 := '個体値:' h=IV_H? ' '? a=IV_A? ' '? b=IV_B? ' '? c=IV_C? ' '? d=IV_D? ' '? s=IV_S?
+* IV                 := '個体値:' h=IV_H? _ a=IV_A? _ b=IV_B? _ c=IV_C? _ d=IV_D? _ s=IV_S?
 * IV_H               := 'H' value=IV_VALUE
 * IV_A               := 'A' value=IV_VALUE
 * IV_B               := 'B' value=IV_VALUE
@@ -50,11 +50,13 @@
 * // 5 行目
 * LINE5         := MOVES_LINE
 * MOVES_LINE    := FOUR_MOVES | THREE_MOVES | TWO_MOVES | ONE_MOVE
-* FOUR_MOVES    := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE '/' move4=MOVE_VALUE
-* THREE_MOVES   := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE
-* TWO_MOVES     := move1=MOVE_VALUE '/' move2=MOVE_VALUE
+* FOUR_MOVES    := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE _ '/' _ move4=MOVE_VALUE
+* THREE_MOVES   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
+* TWO_MOVES     := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 * ONE_MOVE      := move1=MOVE_VALUE
 * MOVE_VALUE    := '[０-９ぁ-んァ-ヶー・]+'
+* // 空白
+* _ := '\s*'
 */
 type Nullable<T> = T | null;
 type $$RuleType<T> = () => Nullable<T>;
@@ -116,6 +118,7 @@ export enum ASTKinds {
     TWO_MOVES = "TWO_MOVES",
     ONE_MOVE = "ONE_MOVE",
     MOVE_VALUE = "MOVE_VALUE",
+    _ = "_",
 }
 export interface POKESOL_TEXT {
     kind: ASTKinds.POKESOL_TEXT;
@@ -278,6 +281,7 @@ export interface ONE_MOVE {
     move1: MOVE_VALUE;
 }
 export type MOVE_VALUE = string;
+export type _ = string;
 export class Parser {
     private readonly input: string;
     private pos: PosInfo;
@@ -340,7 +344,9 @@ export class Parser {
                 let $$res: Nullable<POKEMON_AND_ITEM_LINE> = null;
                 if (true
                     && ($scope$pokemon = this.matchPOKEMON($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:@)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$item = this.matchITEM($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.POKEMON_AND_ITEM_LINE, pokemon: $scope$pokemon, item: $scope$item};
@@ -397,7 +403,7 @@ export class Parser {
                 let $$res: Nullable<ABILITY_AND_TERATYPE_LINE> = null;
                 if (true
                     && ($scope$ability = this.matchABILITY($$dpth + 1, $$cr)) !== null
-                    && this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr) !== null
+                    && this.loopPlus<string>(() => this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) !== null
                     && ($scope$teratype = this.matchTERATYPE($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.ABILITY_AND_TERATYPE_LINE, ability: $scope$ability, teratype: $scope$teratype};
@@ -489,7 +495,7 @@ export class Parser {
                 let $$res: Nullable<NATURE_AND_IV_LINE> = null;
                 if (true
                     && ($scope$nature = this.matchNATURE($$dpth + 1, $$cr)) !== null
-                    && this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr) !== null
+                    && this.loopPlus<string>(() => this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) !== null
                     && ($scope$iv = this.matchIV($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.NATURE_AND_IV_LINE, nature: $scope$nature, iv: $scope$iv};
@@ -550,15 +556,15 @@ export class Parser {
                 if (true
                     && this.regexAccept(String.raw`(?:個体値:)`, "", $$dpth + 1, $$cr) !== null
                     && (($scope$h = this.matchIV_H($$dpth + 1, $$cr)) || true)
-                    && ((this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$a = this.matchIV_A($$dpth + 1, $$cr)) || true)
-                    && ((this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$b = this.matchIV_B($$dpth + 1, $$cr)) || true)
-                    && ((this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$c = this.matchIV_C($$dpth + 1, $$cr)) || true)
-                    && ((this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$d = this.matchIV_D($$dpth + 1, $$cr)) || true)
-                    && ((this.regexAccept(String.raw`(?: )`, "", $$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$s = this.matchIV_S($$dpth + 1, $$cr)) || true)
                 ) {
                     $$res = {kind: ASTKinds.IV, h: $scope$h, a: $scope$a, b: $scope$b, c: $scope$c, d: $scope$d, s: $scope$s};
@@ -771,11 +777,17 @@ export class Parser {
                 let $$res: Nullable<FOUR_MOVES> = null;
                 if (true
                     && ($scope$move1 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move2 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move3 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move4 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.FOUR_MOVES, move1: $scope$move1, move2: $scope$move2, move3: $scope$move3, move4: $scope$move4};
@@ -792,9 +804,13 @@ export class Parser {
                 let $$res: Nullable<THREE_MOVES> = null;
                 if (true
                     && ($scope$move1 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move2 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move3 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.THREE_MOVES, move1: $scope$move1, move2: $scope$move2, move3: $scope$move3};
@@ -810,7 +826,9 @@ export class Parser {
                 let $$res: Nullable<TWO_MOVES> = null;
                 if (true
                     && ($scope$move1 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && this.regexAccept(String.raw`(?:/)`, "", $$dpth + 1, $$cr) !== null
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && ($scope$move2 = this.matchMOVE_VALUE($$dpth + 1, $$cr)) !== null
                 ) {
                     $$res = {kind: ASTKinds.TWO_MOVES, move1: $scope$move1, move2: $scope$move2};
@@ -833,6 +851,9 @@ export class Parser {
     }
     public matchMOVE_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<MOVE_VALUE> {
         return this.regexAccept(String.raw`(?:[０-９ぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
+    }
+    public match_($$dpth: number, $$cr?: ErrorTracker): Nullable<_> {
+        return this.regexAccept(String.raw`(?:\s*)`, "", $$dpth + 1, $$cr);
     }
     public test(): boolean {
         const mrk = this.mark();

@@ -9,7 +9,7 @@ POKESOL_TEXT :=
 // 1 行目
 
 LINE1                 := POKEMON_AND_ITEM_LINE | POKEMON_LINE
-POKEMON_AND_ITEM_LINE := pokemon=POKEMON '@' item=ITEM
+POKEMON_AND_ITEM_LINE := pokemon=POKEMON _ '@' _ item=ITEM
 POKEMON_LINE          := pokemon=POKEMON
 
 POKEMON               := POKEMON_VALUE
@@ -22,7 +22,7 @@ ITEM_VALUE            := '[ぁ-んァ-ヶ一]+'
 // 2 行目
 
 LINE2                     := ABILITY_AND_TERATYPE_LINE | ABILITY_LINE | TERATYPE_LINE
-ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' ' teratype=TERATYPE
+ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' '+ teratype=TERATYPE
 ABILITY_LINE              := ability=ABILITY
 TERATYPE_LINE             := teratype=TERATYPE
 
@@ -36,12 +36,12 @@ TERATYPE_VALUE            := '[ぁ-んァ-ヶー]+'
 // 3 行目
 
 LINE3              := NATURE_AND_IV_LINE | NATURE_LINE | IV_LINE
-NATURE_AND_IV_LINE := nature=NATURE ' ' iv=IV
+NATURE_AND_IV_LINE := nature=NATURE ' '+ iv=IV
 NATURE_LINE        := nature=NATURE
 IV_LINE            := iv=IV
 
 NATURE             := '性格:' value=NATURE_VALUE
-IV                 := '個体値:' h=IV_H? ' '? a=IV_A? ' '? b=IV_B? ' '? c=IV_C? ' '? d=IV_D? ' '? s=IV_S?
+IV                 := '個体値:' h=IV_H? _ a=IV_A? _ b=IV_B? _ c=IV_C? _ d=IV_D? _ s=IV_S?
 IV_H               := 'H' value=IV_VALUE
 IV_A               := 'A' value=IV_VALUE
 IV_B               := 'B' value=IV_VALUE
@@ -72,9 +72,14 @@ EV_VALUE      := '[1-9][0-9]*'
 LINE5         := MOVES_LINE
 MOVES_LINE    := FOUR_MOVES | THREE_MOVES | TWO_MOVES | ONE_MOVE
 
-FOUR_MOVES    := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE '/' move4=MOVE_VALUE
-THREE_MOVES   := move1=MOVE_VALUE '/' move2=MOVE_VALUE '/' move3=MOVE_VALUE
-TWO_MOVES     := move1=MOVE_VALUE '/' move2=MOVE_VALUE
+FOUR_MOVES    := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE _ '/' _ move4=MOVE_VALUE
+THREE_MOVES   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
+TWO_MOVES     := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 ONE_MOVE      := move1=MOVE_VALUE
 
 MOVE_VALUE    := '[０-９ぁ-んァ-ヶー・]+'
+
+
+// 空白
+
+_ := '\s*'
