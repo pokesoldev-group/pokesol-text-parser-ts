@@ -9,7 +9,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tspeg src/grammar.peg src/parser.ts && tsc",
+    "build": "tspeg src/grammar.peg src/parser.ts && tsc --project tsconfig.build.json",
     "prepare": "npm run build",
     "test": "vitest"
   },
