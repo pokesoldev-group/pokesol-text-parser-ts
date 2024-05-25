@@ -10,37 +10,38 @@ then:
 ```javascript
 let { parse } = await import("./dist/index.js")
 
-parse("サンダー@こだわりメガネ\n特性:せいでんき テラスタル:でんき\n性格:ひかえめ 個体値:A31 S0\n154-170-100(100)-72-120-105\n１０まんボルト/ねっぷう/ぼうふう/ボルトチェ ンジ")
+console.dir(parse("カイリュー @ あおぞらプレート\nテラスタイプ: ステラ\n特性: マルチスケイル\n性格: さみしがり\n166-204(252)-132(252)-105-105-101(4) *C0,D0\nじしん / りゅうのまい / テラバースト / けたぐり"), { depth: null })
+
 {
-  pokemonName: 'サンダー',
-  itemName: 'こだわりメガネ',
-  abilityName: 'せいでんき',
-  terastalName: 'でんき',
-  natureName: 'ひかえめ',
+  pokemonName: 'カイリュー',
+  itemName: 'あおぞらプレート',
+  abilityName: 'マルチスケイル',
+  terastalName: 'ステラ',
+  natureName: 'さみしがり',
   ivs: {
     hp: 31,
     attack: 31,
     defense: 31,
-    specialAttack: 31,
-    specialDefense: 31,
-    speed: 0
+    specialAttack: 0,
+    specialDefense: 0,
+    speed: 31
   },
   evs: {
     hp: 0,
-    attack: 0,
-    defense: 100,
+    attack: 252,
+    defense: 252,
     specialAttack: 0,
     specialDefense: 0,
-    speed: 0
+    speed: 4
   },
   actualValue: {
-    hp: 154,
-    attack: 170,
-    defense: 100,
-    specialAttack: 72,
-    specialDefense: 120,
-    speed: 105
+    hp: 166,
+    attack: 204,
+    defense: 132,
+    specialAttack: 105,
+    specialDefense: 105,
+    speed: 101
   },
-  moveNames: [ '１０まんボルト', 'ねっぷう', 'ぼうふう', 'ボルトチェンジ' ]
+  moveNames: [ 'じしん', 'りゅうのまい', 'テラバースト', 'けたぐり' ]
 }
 ```
