@@ -1,7 +1,7 @@
 {
-  "name": "@pokesol/pokesol-text-parser",
+  "name": "@pokesol/pokesol-text-parser-ts",
   "version": "0.1.0",
-  "description": "a pokesol-text parser",
+  "description": "a pokesol-text parser written in typescript",
   "type": "module",
   "types": "./dist/index.d.ts",
   "exports": "./dist/index.js",
