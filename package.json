@@ -15,6 +15,9 @@
   },
   "author": "megane42",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "typescript": "^5.4.5"
   },
