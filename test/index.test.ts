@@ -108,7 +108,7 @@ describe("parse", () => {
     const pokesolText = `カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204-132-105-105-101 *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, evs: { hp: 0, attack: 0, defense: 0, specialAttack: 0, specialDefense: 0, speed: 0 } });
@@ -118,7 +118,7 @@ describe("parse", () => {
     const pokesolText = `カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4)
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 31, attack: 31, defense: 31, specialAttack: 31, specialDefense: 31, speed: 31 } });
@@ -128,7 +128,7 @@ describe("parse", () => {
     const pokesolText = `カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 31, attack: 31, defense: 31, specialAttack: 0, specialDefense: 31, speed: 31 } });
@@ -138,7 +138,7 @@ describe("parse", () => {
     const pokesolText = `カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,H0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 0, attack: 31, defense: 31, specialAttack: 0, specialDefense: 31, speed: 31 } });
@@ -148,7 +148,7 @@ describe("parse", () => {
     const pokesolText = `カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん`;
     expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["じしん"] });
@@ -158,7 +158,7 @@ describe("parse", () => {
     const pokesolText = `バドレックス(黒) @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "バドレックス(黒)" });
@@ -168,7 +168,7 @@ describe("parse", () => {
     const pokesolText = `パフュートン(♂) @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "パフュートン(♂)" });
@@ -178,7 +178,7 @@ describe("parse", () => {
     const pokesolText = `カプ・コケコ @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "カプ・コケコ" });
@@ -188,7 +188,7 @@ describe("parse", () => {
     const pokesolText = `ジガルデ(50%) @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(50%)" });
@@ -198,7 +198,7 @@ describe("parse", () => {
     const pokesolText = `ジガルデ(10%) @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(10%)" });
@@ -208,7 +208,7 @@ describe("parse", () => {
     const pokesolText = `ミュウツー(メガX) @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格:さみしがり
+性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
     expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ミュウツー(メガX)" });
