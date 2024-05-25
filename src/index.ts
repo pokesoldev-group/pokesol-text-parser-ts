@@ -37,7 +37,7 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
   const result = pegParse(pokesolText);
 
   if (!result.ast) {
-    throw new Error(result.errs.join(","));
+    throw new Error(`Failed to parse Pokesol Text: ${JSON.stringify(result.errs)}`);
   }
 
   const pokemonName = result.ast.line1.pokemon;
