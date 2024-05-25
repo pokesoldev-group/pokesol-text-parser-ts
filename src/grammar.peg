@@ -1,85 +1,62 @@
 POKESOL_TEXT :=
-  line1=LINE1 '\n'
-  line2=LINE2 '\n'
-  line3=LINE3 '\n'
-  line4=LINE4 '\n'
-  line5=LINE5
+  line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
+  line2=TERATYPE_LINE '\n'
+  line3=ABILITY_LINE '\n'
+  line4=NATURE_LINE '\n'
+  line5={ STATS_AND_IV_LINE | STATS_LINE } '\n'
+  line6=MOVES_LINE
 
 
 // 1 行目
 
-LINE1                 := POKEMON_AND_ITEM_LINE | POKEMON_LINE
-POKEMON_AND_ITEM_LINE := pokemon=POKEMON _ '@' _ item=ITEM
-POKEMON_LINE          := pokemon=POKEMON
-
-POKEMON               := POKEMON_VALUE
-ITEM                  := ITEM_VALUE
-
+POKEMON_AND_ITEM_LINE := pokemon=POKEMON_VALUE _ '@' _ item=ITEM_VALUE
+POKEMON_LINE          := pokemon=POKEMON_VALUE
 POKEMON_VALUE         := '[0-9a-zA-Zぁ-んァ-ヶー一-龠・()♂♀%]+'
-ITEM_VALUE            := '[ぁ-んァ-ヶ一]+'
+ITEM_VALUE            := '[ぁ-んァ-ヶー]+'
 
 
 // 2 行目
 
-LINE2                     := ABILITY_AND_TERATYPE_LINE | ABILITY_LINE | TERATYPE_LINE
-ABILITY_AND_TERATYPE_LINE := ability=ABILITY ' '+ teratype=TERATYPE
-ABILITY_LINE              := ability=ABILITY
-TERATYPE_LINE             := teratype=TERATYPE
-
-ABILITY                   := '特性:' value=ABILITY_VALUE
-TERATYPE                  := 'テラスタル:' value=TERATYPE_VALUE
-
-ABILITY_VALUE             := '[ぁ-んァ-ヶー]+'
-TERATYPE_VALUE            := '[ぁ-んァ-ヶー]+'
+TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE?
+TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 
 
 // 3 行目
 
-LINE3              := NATURE_AND_IV_LINE | NATURE_LINE | IV_LINE
-NATURE_AND_IV_LINE := nature=NATURE ' '+ iv=IV
-NATURE_LINE        := nature=NATURE
-IV_LINE            := iv=IV
-
-NATURE             := '性格:' value=NATURE_VALUE
-IV                 := '個体値:' h=IV_H? _ a=IV_A? _ b=IV_B? _ c=IV_C? _ d=IV_D? _ s=IV_S?
-IV_H               := 'H' value=IV_VALUE
-IV_A               := 'A' value=IV_VALUE
-IV_B               := 'B' value=IV_VALUE
-IV_C               := 'C' value=IV_VALUE
-IV_D               := 'D' value=IV_VALUE
-IV_S               := 'S' value=IV_VALUE
-
-NATURE_VALUE       := '[ぁ-ん]+'
-IV_VALUE           := '0|[1-9][0-9]*'
+ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE?
+ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
 
 
 // 4 行目
 
-LINE4         := STATS_LINE
-STATS_LINE    := STATS
-
-STATS         := h=STAT '-' a=STAT '-' b=STAT '-' c=STAT '-' d=STAT '-' s=STAT
-STAT          := ACTUAL_AND_EV | ACTUAL
-ACTUAL_AND_EV := value=ACTUAL_VALUE '\(' ev=EV_VALUE '\)'
-ACTUAL        := value=ACTUAL_VALUE
-
-ACTUAL_VALUE  := '[1-9][0-9]*'
-EV_VALUE      := '[1-9][0-9]*'
+NATURE_LINE  := '性格' _ ':' _ nature=NATURE_VALUE?
+NATURE_VALUE := '[ぁ-ん]+'
 
 
 // 5 行目
 
-LINE5         := MOVES_LINE
-MOVES_LINE    := FOUR_MOVES | THREE_MOVES | TWO_MOVES | ONE_MOVE
+STATS_AND_IV_LINE := stats=STATS _ '\*' _ individuals=INDIVIDUALS
+STATS_LINE        := stats=STATS
 
-FOUR_MOVES    := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE _ '/' _ move4=MOVE_VALUE
-THREE_MOVES   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
-TWO_MOVES     := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
-ONE_MOVE      := move1=MOVE_VALUE
+STATS             := h=STAT '-' a=STAT '-' b=STAT '-' c=STAT '-' d=STAT '-' s=STAT
+STAT              := ACTUAL_AND_EFFORT | ACTUAL
+ACTUAL_AND_EFFORT := actual=ACTUAL_VALUE '\(' effort=EFFORT_VALUE '\)'
+ACTUAL            := actual=ACTUAL_VALUE
+ACTUAL_VALUE      := '[1-9][0-9]*'
+EFFORT_VALUE      := '[1-9][0-9]*'
+INDIVIDUALS       := '[HABCDS0-9, ]+' // TODO: ちゃんとパースする
 
-MOVE_VALUE    := '[０-９ぁ-んァ-ヶー・]+'
+
+// 6 行目
+
+MOVES_LINE  := MOVES_FOUR | MOVES_THREE | MOVES_TWO | MOVES_ONE
+MOVES_FOUR  := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE _ '/' _ move4=MOVE_VALUE
+MOVES_THREE := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
+MOVES_TWO   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
+MOVES_ONE   := move1=MOVE_VALUE
+MOVE_VALUE  := '[０-９ぁ-んァ-ヶー・]+'
 
 
 // 空白
 
-_ := '\s*'
+_ := '[ \t]*'
