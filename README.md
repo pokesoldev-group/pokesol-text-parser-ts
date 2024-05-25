@@ -1,14 +1,14 @@
-# Development
+# Installation
 
 ```sh
 $ npm run build
 $ node
 ```
 
-then:
+# Usage
 
 ```javascript
-let { parse } = await import("./dist/index.js")
+import { parse } from "@pokesol/pokesol-text-parser-ts"
 
 console.dir(parse("カイリュー @ あおぞらプレート\nテラスタイプ: ステラ\n特性: マルチスケイル\n性格: さみしがり\n166-204(252)-132(252)-105-105-101(4) *C0,D0\nじしん / りゅうのまい / テラバースト / けたぐり"), { depth: null })
 
