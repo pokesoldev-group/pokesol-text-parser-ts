@@ -54,7 +54,7 @@ MOVES_FOUR  := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALU
 MOVES_THREE := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
 MOVES_TWO   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 MOVES_ONE   := move1=MOVE_VALUE
-MOVE_VALUE  := '[０-９A-Zぁ-んァ-ヶー・]+'
+MOVE_VALUE  := '[０-９Ａ-Ｚぁ-んァ-ヶー・]+'
 
 
 // 空白

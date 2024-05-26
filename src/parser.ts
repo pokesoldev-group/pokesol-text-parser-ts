@@ -37,7 +37,7 @@
 * MOVES_THREE := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
 * MOVES_TWO   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 * MOVES_ONE   := move1=MOVE_VALUE
-* MOVE_VALUE  := '[０-９A-Zぁ-んァ-ヶー・]+'
+* MOVE_VALUE  := '[０-９Ａ-Ｚぁ-んァ-ヶー・]+'
 * // 空白
 * _ := '[ \t]*'
 */
@@ -601,7 +601,7 @@ export class Parser {
             });
     }
     public matchMOVE_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<MOVE_VALUE> {
-        return this.regexAccept(String.raw`(?:[０-９A-Zぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[０-９Ａ-Ｚぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
     }
     public match_($$dpth: number, $$cr?: ErrorTracker): Nullable<_> {
         return this.regexAccept(String.raw`(?:[ \t]*)`, "", $$dpth + 1, $$cr);
