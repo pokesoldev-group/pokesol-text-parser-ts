@@ -4,9 +4,9 @@
 *   line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
 *   line2=TERATYPE_LINE '\n'
 *   line3=ABILITY_LINE '\n'
-*   line4=NATURE_LINE '\n'
-*   line5={ STATS_AND_IV_LINE | STATS_LINE } '\n'
-*   line6=MOVES_LINE
+*   line4=NATURE_LINE
+*   line5={ '\n' body={ STATS_AND_IV_LINE | STATS_LINE } }?
+*   line6={ '\n' body=MOVES_LINE }?
 * // 1 行目
 * POKEMON_AND_ITEM_LINE := pokemon=POKEMON_VALUE _ '@' _ item=ITEM_VALUE
 * POKEMON_LINE          := pokemon=POKEMON_VALUE
@@ -37,7 +37,7 @@
 * MOVES_THREE := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
 * MOVES_TWO   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 * MOVES_ONE   := move1=MOVE_VALUE
-* MOVE_VALUE  := '[０-９ぁ-んァ-ヶー・]+'
+* MOVE_VALUE  := '[０-９Ａ-Ｚぁ-んァ-ヶー・]+'
 * // 空白
 * _ := '[ \t]*'
 */
@@ -50,8 +50,10 @@ export enum ASTKinds {
     POKESOL_TEXT = "POKESOL_TEXT",
     POKESOL_TEXT_$0_1 = "POKESOL_TEXT_$0_1",
     POKESOL_TEXT_$0_2 = "POKESOL_TEXT_$0_2",
-    POKESOL_TEXT_$1_1 = "POKESOL_TEXT_$1_1",
-    POKESOL_TEXT_$1_2 = "POKESOL_TEXT_$1_2",
+    POKESOL_TEXT_$1 = "POKESOL_TEXT_$1",
+    POKESOL_TEXT_$1_$0_1 = "POKESOL_TEXT_$1_$0_1",
+    POKESOL_TEXT_$1_$0_2 = "POKESOL_TEXT_$1_$0_2",
+    POKESOL_TEXT_$2 = "POKESOL_TEXT_$2",
     POKEMON_AND_ITEM_LINE = "POKEMON_AND_ITEM_LINE",
     POKEMON_LINE = "POKEMON_LINE",
     POKEMON_VALUE = "POKEMON_VALUE",
@@ -89,15 +91,23 @@ export interface POKESOL_TEXT {
     line2: TERATYPE_LINE;
     line3: ABILITY_LINE;
     line4: NATURE_LINE;
-    line5: POKESOL_TEXT_$1;
-    line6: MOVES_LINE;
+    line5: Nullable<POKESOL_TEXT_$1>;
+    line6: Nullable<POKESOL_TEXT_$2>;
 }
 export type POKESOL_TEXT_$0 = POKESOL_TEXT_$0_1 | POKESOL_TEXT_$0_2;
 export type POKESOL_TEXT_$0_1 = POKEMON_AND_ITEM_LINE;
 export type POKESOL_TEXT_$0_2 = POKEMON_LINE;
-export type POKESOL_TEXT_$1 = POKESOL_TEXT_$1_1 | POKESOL_TEXT_$1_2;
-export type POKESOL_TEXT_$1_1 = STATS_AND_IV_LINE;
-export type POKESOL_TEXT_$1_2 = STATS_LINE;
+export interface POKESOL_TEXT_$1 {
+    kind: ASTKinds.POKESOL_TEXT_$1;
+    body: POKESOL_TEXT_$1_$0;
+}
+export type POKESOL_TEXT_$1_$0 = POKESOL_TEXT_$1_$0_1 | POKESOL_TEXT_$1_$0_2;
+export type POKESOL_TEXT_$1_$0_1 = STATS_AND_IV_LINE;
+export type POKESOL_TEXT_$1_$0_2 = STATS_LINE;
+export interface POKESOL_TEXT_$2 {
+    kind: ASTKinds.POKESOL_TEXT_$2;
+    body: MOVES_LINE;
+}
 export interface POKEMON_AND_ITEM_LINE {
     kind: ASTKinds.POKEMON_AND_ITEM_LINE;
     pokemon: POKEMON_VALUE;
@@ -210,8 +220,8 @@ export class Parser {
                 let $scope$line2: Nullable<TERATYPE_LINE>;
                 let $scope$line3: Nullable<ABILITY_LINE>;
                 let $scope$line4: Nullable<NATURE_LINE>;
-                let $scope$line5: Nullable<POKESOL_TEXT_$1>;
-                let $scope$line6: Nullable<MOVES_LINE>;
+                let $scope$line5: Nullable<Nullable<POKESOL_TEXT_$1>>;
+                let $scope$line6: Nullable<Nullable<POKESOL_TEXT_$2>>;
                 let $$res: Nullable<POKESOL_TEXT> = null;
                 if (true
                     && ($scope$line1 = this.matchPOKESOL_TEXT_$0($$dpth + 1, $$cr)) !== null
@@ -221,10 +231,8 @@ export class Parser {
                     && ($scope$line3 = this.matchABILITY_LINE($$dpth + 1, $$cr)) !== null
                     && this.regexAccept(String.raw`(?:\n)`, "", $$dpth + 1, $$cr) !== null
                     && ($scope$line4 = this.matchNATURE_LINE($$dpth + 1, $$cr)) !== null
-                    && this.regexAccept(String.raw`(?:\n)`, "", $$dpth + 1, $$cr) !== null
-                    && ($scope$line5 = this.matchPOKESOL_TEXT_$1($$dpth + 1, $$cr)) !== null
-                    && this.regexAccept(String.raw`(?:\n)`, "", $$dpth + 1, $$cr) !== null
-                    && ($scope$line6 = this.matchMOVES_LINE($$dpth + 1, $$cr)) !== null
+                    && (($scope$line5 = this.matchPOKESOL_TEXT_$1($$dpth + 1, $$cr)) || true)
+                    && (($scope$line6 = this.matchPOKESOL_TEXT_$2($$dpth + 1, $$cr)) || true)
                 ) {
                     $$res = {kind: ASTKinds.POKESOL_TEXT, line1: $scope$line1, line2: $scope$line2, line3: $scope$line3, line4: $scope$line4, line5: $scope$line5, line6: $scope$line6};
                 }
@@ -244,16 +252,44 @@ export class Parser {
         return this.matchPOKEMON_LINE($$dpth + 1, $$cr);
     }
     public matchPOKESOL_TEXT_$1($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1> {
-        return this.choice<POKESOL_TEXT_$1>([
-            () => this.matchPOKESOL_TEXT_$1_1($$dpth + 1, $$cr),
-            () => this.matchPOKESOL_TEXT_$1_2($$dpth + 1, $$cr),
+        return this.run<POKESOL_TEXT_$1>($$dpth,
+            () => {
+                let $scope$body: Nullable<POKESOL_TEXT_$1_$0>;
+                let $$res: Nullable<POKESOL_TEXT_$1> = null;
+                if (true
+                    && this.regexAccept(String.raw`(?:\n)`, "", $$dpth + 1, $$cr) !== null
+                    && ($scope$body = this.matchPOKESOL_TEXT_$1_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.POKESOL_TEXT_$1, body: $scope$body};
+                }
+                return $$res;
+            });
+    }
+    public matchPOKESOL_TEXT_$1_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1_$0> {
+        return this.choice<POKESOL_TEXT_$1_$0>([
+            () => this.matchPOKESOL_TEXT_$1_$0_1($$dpth + 1, $$cr),
+            () => this.matchPOKESOL_TEXT_$1_$0_2($$dpth + 1, $$cr),
         ]);
     }
-    public matchPOKESOL_TEXT_$1_1($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1_1> {
+    public matchPOKESOL_TEXT_$1_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1_$0_1> {
         return this.matchSTATS_AND_IV_LINE($$dpth + 1, $$cr);
     }
-    public matchPOKESOL_TEXT_$1_2($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1_2> {
+    public matchPOKESOL_TEXT_$1_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$1_$0_2> {
         return this.matchSTATS_LINE($$dpth + 1, $$cr);
+    }
+    public matchPOKESOL_TEXT_$2($$dpth: number, $$cr?: ErrorTracker): Nullable<POKESOL_TEXT_$2> {
+        return this.run<POKESOL_TEXT_$2>($$dpth,
+            () => {
+                let $scope$body: Nullable<MOVES_LINE>;
+                let $$res: Nullable<POKESOL_TEXT_$2> = null;
+                if (true
+                    && this.regexAccept(String.raw`(?:\n)`, "", $$dpth + 1, $$cr) !== null
+                    && ($scope$body = this.matchMOVES_LINE($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.POKESOL_TEXT_$2, body: $scope$body};
+                }
+                return $$res;
+            });
     }
     public matchPOKEMON_AND_ITEM_LINE($$dpth: number, $$cr?: ErrorTracker): Nullable<POKEMON_AND_ITEM_LINE> {
         return this.run<POKEMON_AND_ITEM_LINE>($$dpth,
@@ -565,7 +601,7 @@ export class Parser {
             });
     }
     public matchMOVE_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<MOVE_VALUE> {
-        return this.regexAccept(String.raw`(?:[０-９ぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[０-９Ａ-Ｚぁ-んァ-ヶー・]+)`, "", $$dpth + 1, $$cr);
     }
     public match_($$dpth: number, $$cr?: ErrorTracker): Nullable<_> {
         return this.regexAccept(String.raw`(?:[ \t]*)`, "", $$dpth + 1, $$cr);

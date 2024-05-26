@@ -2,9 +2,9 @@ POKESOL_TEXT :=
   line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
   line2=TERATYPE_LINE '\n'
   line3=ABILITY_LINE '\n'
-  line4=NATURE_LINE '\n'
-  line5={ STATS_AND_IV_LINE | STATS_LINE } '\n'
-  line6=MOVES_LINE
+  line4=NATURE_LINE
+  line5={ '\n' body={ STATS_AND_IV_LINE | STATS_LINE } }?
+  line6={ '\n' body=MOVES_LINE }?
 
 
 // 1 行目
@@ -54,7 +54,7 @@ MOVES_FOUR  := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALU
 MOVES_THREE := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE _ '/' _ move3=MOVE_VALUE
 MOVES_TWO   := move1=MOVE_VALUE _ '/' _ move2=MOVE_VALUE
 MOVES_ONE   := move1=MOVE_VALUE
-MOVE_VALUE  := '[０-９ぁ-んァ-ヶー・]+'
+MOVE_VALUE  := '[０-９Ａ-Ｚぁ-んァ-ヶー・]+'
 
 
 // 空白

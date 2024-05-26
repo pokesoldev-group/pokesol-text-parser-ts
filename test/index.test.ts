@@ -111,7 +111,17 @@ describe("parse", () => {
 性格: さみしがり
 166-204-132-105-105-101 *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, evs: { hp: 0, attack: 0, defense: 0, specialAttack: 0, specialDefense: 0, speed: 0 } });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+    });
   });
 
   test("without IV", () => {
@@ -121,7 +131,17 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4)
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 31, attack: 31, defense: 31, specialAttack: 31, specialDefense: 31, speed: 31 } });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+    });
   });
 
   test("with single IV", () => {
@@ -131,7 +151,17 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 31, attack: 31, defense: 31, specialAttack: 0, specialDefense: 31, speed: 31 } });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 0,
+        specialDefense: 31,
+        speed: 31,
+      },
+    });
   });
 
   test("with arbitrary-ordered IV", () => {
@@ -141,7 +171,17 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,H0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, ivs: { hp: 0, attack: 31, defense: 31, specialAttack: 0, specialDefense: 31, speed: 31 } });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      ivs: {
+        hp: 0,
+        attack: 31,
+        defense: 31,
+        specialAttack: 0,
+        specialDefense: 31,
+        speed: 31,
+      },
+    });
   });
 
   test("with partial moves", () => {
@@ -154,6 +194,16 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["じしん"] });
   });
 
+  test("with moves with alphabet", () => {
+    const pokesolText = `カイリュー @ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+166-204(252)-132(252)-105-105-101(4) *C0,D0
+ＤＤラリアット`;
+    expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["ＤＤラリアット"] });
+  });
+
   test("with pokemon name with kanji", () => {
     const pokesolText = `バドレックス(黒) @ あおぞらプレート
 テラスタイプ: ステラ
@@ -161,7 +211,10 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "バドレックス(黒)" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "バドレックス(黒)",
+    });
   });
 
   test("with pokemon name with symbol (♂)", () => {
@@ -171,7 +224,10 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "パフュートン(♂)" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "パフュートン(♂)",
+    });
   });
 
   test("with pokemon name with symbol (・)", () => {
@@ -181,7 +237,10 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "カプ・コケコ" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "カプ・コケコ",
+    });
   });
 
   test("with pokemon name with symbol (%)", () => {
@@ -191,7 +250,10 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(50%)" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "ジガルデ(50%)",
+    });
   });
 
   test("with pokemon name with number", () => {
@@ -201,7 +263,10 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ジガルデ(10%)" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "ジガルデ(10%)",
+    });
   });
 
   test("with pokemon name with alphabet", () => {
@@ -211,6 +276,90 @@ describe("parse", () => {
 性格: さみしがり
 166-204(252)-132(252)-105-105-101(4) *C0,D0
 じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, pokemonName: "ミュウツー(メガX)" });
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "ミュウツー(メガX)",
+    });
+  });
+
+  test("without stats and moves", () => {
+    const pokesolText = `カイリュー
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり`;
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      itemName: null,
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      actualValue: {
+        hp: null,
+        attack: null,
+        defense: null,
+        specialAttack: null,
+        specialDefense: null,
+        speed: null,
+      },
+      moveNames: [],
+    });
+  });
+
+  test("without stats", () => {
+    const pokesolText = `カイリュー
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+じしん / りゅうのまい / テラバースト / けたぐり`;
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      itemName: null,
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      actualValue: {
+        hp: null,
+        attack: null,
+        defense: null,
+        specialAttack: null,
+        specialDefense: null,
+        speed: null,
+      },
+    });
+  });
+
+  test("without moves", () => {
+    const pokesolText = `カイリュー @ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+166-204(252)-132(252)-105-105-101(4) *C0,D0`;
+    expect(parse(pokesolText)).toEqual({ ...expected, moveNames: [] });
   });
 });
