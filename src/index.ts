@@ -79,40 +79,40 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
     speed: 31,
   };
 
-  if ("line5" in result.ast) {
+  if (result.ast.line5 !== null) {
     evs.hp =
-      result.ast.line5.stats.h.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.h.effort)
+      result.ast.line5.body.stats.h.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.h.effort)
         : 0;
     evs.attack =
-      result.ast.line5.stats.a.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.a.effort)
+      result.ast.line5.body.stats.a.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.a.effort)
         : 0;
     evs.defense =
-      result.ast.line5.stats.b.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.b.effort)
+      result.ast.line5.body.stats.b.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.b.effort)
         : 0;
     evs.specialAttack =
-      result.ast.line5.stats.c.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.c.effort)
+      result.ast.line5.body.stats.c.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.c.effort)
         : 0;
     evs.specialDefense =
-      result.ast.line5.stats.d.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.d.effort)
+      result.ast.line5.body.stats.d.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.d.effort)
         : 0;
     evs.speed =
-      result.ast.line5.stats.s.kind === ASTKinds.ACTUAL_AND_EFFORT
-        ? Number(result.ast.line5.stats.s.effort)
+      result.ast.line5.body.stats.s.kind === ASTKinds.ACTUAL_AND_EFFORT
+        ? Number(result.ast.line5.body.stats.s.effort)
         : 0;
-    actualValue.hp = Number(result.ast.line5.stats.h.actual);
-    actualValue.attack = Number(result.ast.line5.stats.a.actual);
-    actualValue.defense = Number(result.ast.line5.stats.b.actual);
-    actualValue.specialAttack = Number(result.ast.line5.stats.c.actual);
-    actualValue.specialDefense = Number(result.ast.line5.stats.d.actual);
-    actualValue.speed = Number(result.ast.line5.stats.s.actual);
+    actualValue.hp = Number(result.ast.line5.body.stats.h.actual);
+    actualValue.attack = Number(result.ast.line5.body.stats.a.actual);
+    actualValue.defense = Number(result.ast.line5.body.stats.b.actual);
+    actualValue.specialAttack = Number(result.ast.line5.body.stats.c.actual);
+    actualValue.specialDefense = Number(result.ast.line5.body.stats.d.actual);
+    actualValue.speed = Number(result.ast.line5.body.stats.s.actual);
 
-    if (result.ast.line5.kind === ASTKinds.STATS_AND_IV_LINE) {
-      result.ast.line5.individuals.split(",").forEach((iv) => {
+    if (result.ast.line5.body.kind === ASTKinds.STATS_AND_IV_LINE) {
+      result.ast.line5.body.individuals.split(",").forEach((iv) => {
         const ivStatus = iv.match(/[HABCDS]/);
         const ivValue = iv.match(/\d+/);
         if (ivStatus !== null && ivValue !== null) {
@@ -142,21 +142,21 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
   }
 
   const moveNames = [];
-  if ("line6" in result.ast) {
-    if (result.ast.line6.kind === ASTKinds.MOVES_FOUR) {
-      moveNames.push(result.ast.line6.move1);
-      moveNames.push(result.ast.line6.move2);
-      moveNames.push(result.ast.line6.move3);
-      moveNames.push(result.ast.line6.move4);
-    } else if (result.ast.line6.kind === ASTKinds.MOVES_THREE) {
-      moveNames.push(result.ast.line6.move1);
-      moveNames.push(result.ast.line6.move2);
-      moveNames.push(result.ast.line6.move3);
-    } else if (result.ast.line6.kind === ASTKinds.MOVES_TWO) {
-      moveNames.push(result.ast.line6.move1);
-      moveNames.push(result.ast.line6.move2);
-    } else if (result.ast.line6.kind === ASTKinds.MOVES_ONE) {
-      moveNames.push(result.ast.line6.move1);
+  if (result.ast.line6 !== null) {
+    if (result.ast.line6.body.kind === ASTKinds.MOVES_FOUR) {
+      moveNames.push(result.ast.line6.body.move1);
+      moveNames.push(result.ast.line6.body.move2);
+      moveNames.push(result.ast.line6.body.move3);
+      moveNames.push(result.ast.line6.body.move4);
+    } else if (result.ast.line6.body.kind === ASTKinds.MOVES_THREE) {
+      moveNames.push(result.ast.line6.body.move1);
+      moveNames.push(result.ast.line6.body.move2);
+      moveNames.push(result.ast.line6.body.move3);
+    } else if (result.ast.line6.body.kind === ASTKinds.MOVES_TWO) {
+      moveNames.push(result.ast.line6.body.move1);
+      moveNames.push(result.ast.line6.body.move2);
+    } else if (result.ast.line6.body.kind === ASTKinds.MOVES_ONE) {
+      moveNames.push(result.ast.line6.body.move1);
     }
   }
 
