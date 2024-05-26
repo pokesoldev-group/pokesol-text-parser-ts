@@ -272,7 +272,7 @@ describe("parse", () => {
     });
   });
 
-  test("minimum pokesol text", () => {
+  test("without stats and moves", () => {
     const pokesolText = `カイリュー
 テラスタイプ: ステラ
 特性: マルチスケイル
@@ -305,6 +305,42 @@ describe("parse", () => {
         speed: null,
       },
       moveNames: [],
+    });
+  });
+
+  test("without stats", () => {
+    const pokesolText = `カイリュー
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+じしん / りゅうのまい / テラバースト / けたぐり`;
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      itemName: null,
+      ivs: {
+        hp: 31,
+        attack: 31,
+        defense: 31,
+        specialAttack: 31,
+        specialDefense: 31,
+        speed: 31,
+      },
+      evs: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        specialAttack: 0,
+        specialDefense: 0,
+        speed: 0,
+      },
+      actualValue: {
+        hp: null,
+        attack: null,
+        defense: null,
+        specialAttack: null,
+        specialDefense: null,
+        speed: null,
+      },
     });
   });
 

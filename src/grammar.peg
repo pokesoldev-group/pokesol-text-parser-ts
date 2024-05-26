@@ -1,25 +1,10 @@
-POKESOL_TEXT := ROW_SIX | ROW_FIVE | ROW_FOUR
-
-ROW_SIX :=
-  line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
-  line2=TERATYPE_LINE '\n'
-  line3=ABILITY_LINE '\n'
-  line4=NATURE_LINE '\n'
-  line5={ STATS_AND_IV_LINE | STATS_LINE } '\n'
-  line6=MOVES_LINE
-
-ROW_FIVE :=
-  line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
-  line2=TERATYPE_LINE '\n'
-  line3=ABILITY_LINE '\n'
-  line4=NATURE_LINE '\n'
-  line5={ STATS_AND_IV_LINE | STATS_LINE }
-
-ROW_FOUR :=
+POKESOL_TEXT :=
   line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
   line2=TERATYPE_LINE '\n'
   line3=ABILITY_LINE '\n'
   line4=NATURE_LINE
+  line5={ '\n' body={ STATS_AND_IV_LINE | STATS_LINE } }?
+  line6={ '\n' body=MOVES_LINE }?
 
 
 // 1 行目
