@@ -1,8 +1,7 @@
 # Installation
 
 ```sh
-$ npm run build
-$ node
+npm i @pokesol/pokesol-text-parser-ts
 ```
 
 # Usage
