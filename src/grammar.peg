@@ -1,10 +1,10 @@
 POKESOL_TEXT :=
-  line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n'
-  line2=TERATYPE_LINE '\n'
-  line3=ABILITY_LINE '\n'
+  line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n+'
+  line2=TERATYPE_LINE '\n+'
+  line3=ABILITY_LINE '\n+'
   line4=NATURE_LINE
-  line5={ '\n' body={ STATS_AND_IV_LINE | STATS_LINE } }?
-  line6={ '\n' body=MOVES_LINE }?
+  line5={ '\n+' body={ STATS_AND_IV_LINE | STATS_LINE } }?
+  line6={ '\n+' body=MOVES_LINE }?
 
 
 // 1 行目
