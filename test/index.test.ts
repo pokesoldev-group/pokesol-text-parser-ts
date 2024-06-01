@@ -64,6 +64,22 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual(expected);
   });
 
+  test("with linebreaks", () => {
+    const pokesolText = `カイリュー @ あおぞらプレート
+
+テラスタイプ: ステラ
+
+特性: マルチスケイル
+
+性格: さみしがり
+
+166-204(252)-132(252)-105-105-101(4) *C0,D0
+
+じしん / りゅうのまい / テラバースト / けたぐり`;
+
+    expect(parse(pokesolText)).toEqual(expected);
+  });
+
   test("without item", () => {
     const pokesolText = `カイリュー
 テラスタイプ: ステラ
