@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0
+
+### Added
+
+- Support any number of line breaks (#5)
+
 ## 0.2.0
 
 ### Added
