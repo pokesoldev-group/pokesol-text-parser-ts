@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+### Added
+
+- Support comments (#6)
+
 ## 0.3.0
 
 ### Added
