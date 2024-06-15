@@ -378,4 +378,19 @@ describe("parse", () => {
 166-204(252)-132(252)-105-105-101(4) *C0,D0`;
     expect(parse(pokesolText)).toEqual({ ...expected, moveNames: [] });
   });
+
+  test("with comments", () => {
+    const pokesolText = `
+// comment
+カイリュー @ あおぞらプレート // comment
+テラスタイプ: ステラ          // comment
+特性: マルチスケイル          // comment
+性格: さみしがり              // comment
+// comment
+166-204(252)-132(252)-105-105-101(4) *C0,D0    // comment
+じしん / りゅうのまい / テラバースト / けたぐり// comment
+// comment
+`;
+    expect(parse(pokesolText)).toEqual(expected);
+  });
 });
