@@ -9,7 +9,16 @@ npm i @pokesol/pokesol-text-parser-ts
 ```javascript
 import { parse } from "@pokesol/pokesol-text-parser-ts"
 
-console.dir(parse("カイリュー @ あおぞらプレート\nテラスタイプ: ステラ\n特性: マルチスケイル\n性格: さみしがり\n166-204(252)-132(252)-105-105-101(4) *C0,D0\nじしん / りゅうのまい / テラバースト / けたぐり"), { depth: null })
+const pokesolText = `
+カイリュー @ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+166-204(252)-132(252)-105-105-101(4) *C0,D0
+じしん / りゅうのまい / テラバースト / けたぐり
+`
+
+console.dir(parse(pokesolText), { depth: null })
 
 {
   pokemonName: 'カイリュー',
@@ -44,3 +53,13 @@ console.dir(parse("カイリュー @ あおぞらプレート\nテラスタイ�
   moveNames: [ 'じしん', 'りゅうのまい', 'テラバースト', 'けたぐり' ]
 }
 ```
+
+# Release
+
+- `npm run build`
+- `npm link`
+- Check the new behaviors
+- Write CHANGELOG.md
+- `git commit -m "add changelog for v*.*.*"`
+- `npm version {major,minor,patch}`
+- `npm publish`
