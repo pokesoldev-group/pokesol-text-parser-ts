@@ -36,7 +36,7 @@ export type PokesolTextParseReult = {
 };
 
 export const parse = (pokesolText: string): PokesolTextParseReult => {
-  const result = pegParse(pokesolText);
+  const result = pegParse(chomp(pokesolText));
 
   if (!result.ast) {
     throw new Error(
@@ -172,3 +172,12 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
     moveNames,
   };
 };
+
+const chomp = (text: string): string => {
+  return text
+    .split('\n')                      // for each line
+    .map(line => line.split('//')[0]) // - remove comment
+    .map(line => line.trim())         // - remove trailing whitespace
+    .filter(line => line.length > 0)  // - remove empty line
+    .join('\n');                      // then concat
+}
