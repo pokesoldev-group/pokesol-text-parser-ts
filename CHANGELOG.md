@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+### Fixed
+
+- Fix a parsing error for Pokémon with double-byte alphanumeric characters in the name (e.g. Porygon2 and Porygon-Z)
+
 ## 0.4.0
 
 ### Added
