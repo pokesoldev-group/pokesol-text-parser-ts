@@ -285,6 +285,19 @@ describe("parse", () => {
     });
   });
 
+  test("with pokemon name with full-width number", () => {
+    const pokesolText = `ポリゴン２@ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+166-204(252)-132(252)-105-105-101(4) *C0,D0
+じしん / りゅうのまい / テラバースト / けたぐり`;
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "ポリゴン２",
+    });
+  });
+
   test("with pokemon name with alphabet", () => {
     const pokesolText = `ミュウツー(メガX) @ あおぞらプレート
 テラスタイプ: ステラ
@@ -295,6 +308,19 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ミュウツー(メガX)",
+    });
+  });
+
+  test("with pokemon name with full-width alphabet", () => {
+    const pokesolText = `ポリゴンＺ @ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+性格: さみしがり
+166-204(252)-132(252)-105-105-101(4) *C0,D0
+じしん / りゅうのまい / テラバースト / けたぐり`;
+    expect(parse(pokesolText)).toEqual({
+      ...expected,
+      pokemonName: "ポリゴンＺ",
     });
   });
 
