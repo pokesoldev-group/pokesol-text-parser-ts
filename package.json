@@ -10,9 +10,13 @@
   },
   "scripts": {
     "build": "tspeg src/grammar.peg src/parser.ts && tsc --project tsconfig.build.json",
-    "prepare": "npm run build",
+    "prepack": "pnpm run build",
     "test": "vitest"
   },
+  "contributors": [
+    "megane42",
+    "kuroppe1819"
+  ],
   "author": "megane42",
   "license": "MIT",
   "files": [
