@@ -1,7 +1,7 @@
 # Installation
 
 ```sh
-npm i @pokesol/pokesol-text-parser-ts
+pnpm add @pokesol/pokesol-text-parser-ts
 ```
 
 # Usage
@@ -56,10 +56,10 @@ console.dir(parse(pokesolText), { depth: null })
 
 # Release
 
-- `npm run build`
-- `npm link`
+- `pnpm run build`
+- `pnpm link`
 - Check the new behaviors
 - Write CHANGELOG.md
 - `git commit -m "add changelog for v*.*.*"`
-- `npm version {major,minor,patch}`
-- `npm publish`
+- `pnpm version {major,minor,patch}`
+- `pnpm publish`
