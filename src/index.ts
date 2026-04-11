@@ -13,16 +13,9 @@ export type PokesolTextParseReult = {
   pokemonName: string | null;
   itemName: string | null;
   abilityName: string | null;
+  preMegaAbilityName: string | null;
   terastalName: string | null;
   natureName: string | null;
-  ivs: {
-    hp: number;
-    attack: number;
-    defense: number;
-    specialAttack: number;
-    specialDefense: number;
-    speed: number;
-  };
   evs: {
     hp: number;
     attack: number;
@@ -50,8 +43,9 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
       ? result.ast.line1.item
       : null;
 
-  const terastalName = result.ast.line2.teratype || null;
+  const terastalName = result.ast.line2?.body.teratype || null;
   const abilityName = result.ast.line3.ability || null;
+  const preMegaAbilityName = result.ast.line3.preMega?.body || null;
   const natureName = result.ast.line4.nature || null;
 
   const evs = {
@@ -69,14 +63,6 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
     specialAttack: null,
     specialDefense: null,
     speed: null,
-  };
-  const ivs = {
-    hp: 31,
-    attack: 31,
-    defense: 31,
-    specialAttack: 31,
-    specialDefense: 31,
-    speed: 31,
   };
 
   if (result.ast.line5 !== null) {
@@ -110,35 +96,6 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
     actualValue.specialAttack = Number(result.ast.line5.body.stats.c.actual);
     actualValue.specialDefense = Number(result.ast.line5.body.stats.d.actual);
     actualValue.speed = Number(result.ast.line5.body.stats.s.actual);
-
-    if (result.ast.line5.body.kind === ASTKinds.STATS_AND_IV_LINE) {
-      result.ast.line5.body.individuals.split(",").forEach((iv) => {
-        const ivStatus = iv.match(/[HABCDS]/);
-        const ivValue = iv.match(/\d+/);
-        if (ivStatus !== null && ivValue !== null) {
-          switch (ivStatus[0]) {
-            case "H":
-              ivs.hp = Number(ivValue[0]);
-              break;
-            case "A":
-              ivs.attack = Number(ivValue[0]);
-              break;
-            case "B":
-              ivs.defense = Number(ivValue[0]);
-              break;
-            case "C":
-              ivs.specialAttack = Number(ivValue[0]);
-              break;
-            case "D":
-              ivs.specialDefense = Number(ivValue[0]);
-              break;
-            case "S":
-              ivs.speed = Number(ivValue[0]);
-              break;
-          }
-        }
-      });
-    }
   }
 
   const moveNames = [];
@@ -164,9 +121,9 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
     pokemonName,
     itemName,
     abilityName,
+    preMegaAbilityName,
     terastalName,
     natureName,
-    ivs,
     evs,
     actualValue,
     moveNames,

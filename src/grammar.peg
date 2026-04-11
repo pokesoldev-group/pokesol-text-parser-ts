@@ -1,9 +1,9 @@
 POKESOL_TEXT :=
   line1={ POKEMON_AND_ITEM_LINE | POKEMON_LINE } '\n+'
-  line2=TERATYPE_LINE '\n+'
+  line2={ body=TERATYPE_LINE '\n+' }?
   line3=ABILITY_LINE '\n+'
   line4=NATURE_LINE
-  line5={ '\n+' body={ STATS_AND_IV_LINE | STATS_LINE } }?
+  line5={ '\n+' body=STATS_LINE }?
   line6={ '\n+' body=MOVES_LINE }?
 
 
@@ -17,25 +17,24 @@ ITEM_VALUE            := '[ぁ-んァ-ヶー]+'
 
 // 2 行目
 
-TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE?
+TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 
 
 // 3 行目
 
-ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE?
+ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? preMega={ '\(' body=ABILITY_VALUE '\)' }?
 ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
 
 
 // 4 行目
 
-NATURE_LINE  := '性格' _ ':' _ nature=NATURE_VALUE?
+NATURE_LINE  := '能力補正' _ ':' _ nature=NATURE_VALUE?
 NATURE_VALUE := '[ぁ-ん]+'
 
 
 // 5 行目
 
-STATS_AND_IV_LINE := stats=STATS _ '\*' _ individuals=INDIVIDUALS
 STATS_LINE        := stats=STATS
 
 STATS             := h=STAT '-' a=STAT '-' b=STAT '-' c=STAT '-' d=STAT '-' s=STAT
@@ -44,7 +43,6 @@ ACTUAL_AND_EFFORT := actual=ACTUAL_VALUE '\(' effort=EFFORT_VALUE '\)'
 ACTUAL            := actual=ACTUAL_VALUE
 ACTUAL_VALUE      := '[1-9][0-9]*'
 EFFORT_VALUE      := '[1-9][0-9]*'
-INDIVIDUALS       := '[HABCDS0-9, ]+' // TODO: ちゃんとパースする
 
 
 // 6 行目
