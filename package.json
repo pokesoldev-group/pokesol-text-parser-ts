@@ -24,8 +24,8 @@
     "dist"
   ],
   "devDependencies": {
-    "tspeg": "^3.3.1",
-    "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "tspeg": "3.3.1",
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
   }
 }
