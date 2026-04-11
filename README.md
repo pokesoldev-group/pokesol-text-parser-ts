@@ -13,8 +13,8 @@ const pokesolText = `
 カイリュー @ あおぞらプレート
 テラスタイプ: ステラ
 特性: マルチスケイル
-性格: さみしがり
-166-204(252)-132(252)-105-105-101(4) *C0,D0
+能力補正: さみしがり
+166-204(32)-132(32)-105-105-101(2)
 じしん / りゅうのまい / テラバースト / けたぐり
 `
 
@@ -24,23 +24,16 @@ console.dir(parse(pokesolText), { depth: null })
   pokemonName: 'カイリュー',
   itemName: 'あおぞらプレート',
   abilityName: 'マルチスケイル',
+  preMegaAbilityName: null,
   terastalName: 'ステラ',
   natureName: 'さみしがり',
-  ivs: {
-    hp: 31,
-    attack: 31,
-    defense: 31,
-    specialAttack: 0,
-    specialDefense: 0,
-    speed: 31
-  },
   evs: {
     hp: 0,
-    attack: 252,
-    defense: 252,
+    attack: 32,
+    defense: 32,
     specialAttack: 0,
     specialDefense: 0,
-    speed: 4
+    speed: 2
   },
   actualValue: {
     hp: 166,
