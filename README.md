@@ -10,40 +10,40 @@ pnpm add @pokesol/pokesol-text-parser-ts
 import { parse } from "@pokesol/pokesol-text-parser-ts"
 
 const pokesolText = `
-カイリュー @ あおぞらプレート
-テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり
+メガガブリアス @ ガブリアスナイト
+テラスタイプ:
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック
 `
 
 console.dir(parse(pokesolText), { depth: null })
 
 {
-  pokemonName: 'カイリュー',
-  itemName: 'あおぞらプレート',
-  abilityName: 'マルチスケイル',
-  preMegaAbilityName: null,
-  terastalName: 'ステラ',
-  natureName: 'さみしがり',
+  pokemonName: 'メガガブリアス',
+  itemName: 'ガブリアスナイト',
+  abilityName: 'すなのちから',
+  preMegaAbilityName: 'さめはだ',
+  terastalName: null,
+  natureName: 'ようき',
   evs: {
-    hp: 0,
-    attack: 32,
-    defense: 32,
-    specialAttack: 0,
-    specialDefense: 0,
-    speed: 2
+    hp: 10,
+    attack: 10,
+    defense: 10,
+    specialAttack: 10,
+    specialDefense: 10,
+    speed: 16
   },
   actualValue: {
-    hp: 166,
-    attack: 204,
-    defense: 132,
-    specialAttack: 105,
-    specialDefense: 105,
-    speed: 101
+    hp: 193,
+    attack: 200,
+    defense: 145,
+    specialAttack: 135,
+    specialDefense: 125,
+    speed: 140
   },
-  moveNames: [ 'じしん', 'りゅうのまい', 'テラバースト', 'けたぐり' ]
+  moveNames: [ 'スケイルショット', 'だいちのちから', 'がんせきふうじ', 'ステルスロック' ]
 }
 ```
 

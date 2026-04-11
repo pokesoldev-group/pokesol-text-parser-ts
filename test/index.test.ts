@@ -28,13 +28,42 @@ describe("parse", () => {
   };
 
   test("with full values", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual(expected);
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
+    expect(parse(pokesolText)).toEqual({
+      pokemonName: "メガガブリアス",
+      itemName: "ガブリアスナイト",
+      abilityName: "すなのちから",
+      preMegaAbilityName: "さめはだ",
+      terastalName: "ステラ",
+      natureName: "ようき",
+      evs: {
+        hp: 10,
+        attack: 10,
+        defense: 10,
+        specialAttack: 10,
+        specialDefense: 10,
+        speed: 16,
+      },
+      actualValue: {
+        hp: 193,
+        attack: 200,
+        defense: 145,
+        specialAttack: 135,
+        specialDefense: 125,
+        speed: 140,
+      },
+      moveNames: [
+        "スケイルショット",
+        "だいちのちから",
+        "がんせきふうじ",
+        "ステルスロック",
+      ],
+    });
   });
 
   test("with whitespace", () => {
@@ -112,43 +141,14 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual({ ...expected, abilityName: null });
   });
 
-  test("with pre-mega ability", () => {
-    const pokesolText = `メガガブリアス @ ガブリアスナイト
-特性: すなのちから(さめはだ)
-能力補正: ようき
-193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
-スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
-    expect(parse(pokesolText)).toEqual({
-      ...expected,
-      pokemonName: "メガガブリアス",
-      itemName: "ガブリアスナイト",
-      abilityName: "すなのちから",
-      preMegaAbilityName: "さめはだ",
-      terastalName: null,
-      natureName: "ようき",
-      evs: {
-        hp: 10,
-        attack: 10,
-        defense: 10,
-        specialAttack: 10,
-        specialDefense: 10,
-        speed: 16,
-      },
-      actualValue: {
-        hp: 193,
-        attack: 200,
-        defense: 145,
-        specialAttack: 135,
-        specialDefense: 125,
-        speed: 140,
-      },
-      moveNames: [
-        "スケイルショット",
-        "だいちのちから",
-        "がんせきふうじ",
-        "ステルスロック",
-      ],
-    });
+  test("without pre-mega ability", () => {
+    const pokesolText = `カイリュー @ あおぞらプレート
+テラスタイプ: ステラ
+特性: マルチスケイル
+能力補正: さみしがり
+166-204(32)-132(32)-105-105-101(2)
+じしん / りゅうのまい / テラバースト / けたぐり`;
+    expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("without nature", () => {
