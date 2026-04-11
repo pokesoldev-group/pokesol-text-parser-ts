@@ -1,3 +1,4 @@
+onlyBuiltDependencies: []
 ignoredBuiltDependencies:
   - esbuild
-onlyBuiltDependencies: []
+minimumReleaseAge: 10080
