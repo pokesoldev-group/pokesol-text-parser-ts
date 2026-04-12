@@ -23,7 +23,7 @@ TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 
 // 3 行目
 
-ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? preMega={ '\(' body=ABILITY_VALUE '\)' }?
+ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? _ preMega={ '\(' body=ABILITY_VALUE '\)' }?
 ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
 
 

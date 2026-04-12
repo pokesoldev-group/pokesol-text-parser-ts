@@ -16,7 +16,7 @@
 * TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 * TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 * // 3 行目
-* ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? preMega={ '\(' body=ABILITY_VALUE '\)' }?
+* ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? _ preMega={ '\(' body=ABILITY_VALUE '\)' }?
 * ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
 * // 4 行目
 * NATURE_LINE  := '能力補正' _ ':' _ nature=NATURE_VALUE?
@@ -357,6 +357,7 @@ export class Parser {
                     && this.regexAccept(String.raw`(?::)`, "", $$dpth + 1, $$cr) !== null
                     && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$ability = this.matchABILITY_VALUE($$dpth + 1, $$cr)) || true)
+                    && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$preMega = this.matchABILITY_LINE_$0($$dpth + 1, $$cr)) || true)
                 ) {
                     $$res = {kind: ASTKinds.ABILITY_LINE, ability: $scope$ability, preMega: $scope$preMega};
