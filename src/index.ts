@@ -104,12 +104,17 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
       result.ast.line5.body.stats.s.kind === ASTKinds.ACTUAL_AND_EFFORT
         ? Number(result.ast.line5.body.stats.s.effort)
         : 0;
-    actualValue.hp = Number(result.ast.line5.body.stats.h.actual);
-    actualValue.attack = Number(result.ast.line5.body.stats.a.actual);
-    actualValue.defense = Number(result.ast.line5.body.stats.b.actual);
-    actualValue.specialAttack = Number(result.ast.line5.body.stats.c.actual);
-    actualValue.specialDefense = Number(result.ast.line5.body.stats.d.actual);
-    actualValue.speed = Number(result.ast.line5.body.stats.s.actual);
+
+    const stringToValue = (input: string): number | null => {
+      const num = Number(input);
+      return isNaN(num) ? null : num;
+    }
+    actualValue.hp = stringToValue(result.ast.line5.body.stats.h.actual);
+    actualValue.attack = stringToValue(result.ast.line5.body.stats.a.actual);
+    actualValue.defense = stringToValue(result.ast.line5.body.stats.b.actual);
+    actualValue.specialAttack = stringToValue(result.ast.line5.body.stats.c.actual);
+    actualValue.specialDefense = stringToValue(result.ast.line5.body.stats.d.actual);
+    actualValue.speed = stringToValue(result.ast.line5.body.stats.s.actual);
 
     if (result.ast.line5.body.kind === ASTKinds.STATS_AND_IV_LINE) {
       result.ast.line5.body.individuals.split(",").forEach((iv) => {

@@ -28,7 +28,7 @@
 * STAT              := ACTUAL_AND_EFFORT | ACTUAL
 * ACTUAL_AND_EFFORT := actual=ACTUAL_VALUE '\(' effort=EFFORT_VALUE '\)'
 * ACTUAL            := actual=ACTUAL_VALUE
-* ACTUAL_VALUE      := '[1-9][0-9]*'
+* ACTUAL_VALUE      := '[1-9][0-9]*' | 'x'
 * EFFORT_VALUE      := '[1-9][0-9]*'
 * INDIVIDUALS       := '[HABCDS0-9, ]+' // TODO: ちゃんとパースする
 * // 6 行目
@@ -71,7 +71,8 @@ export enum ASTKinds {
     STAT_2 = "STAT_2",
     ACTUAL_AND_EFFORT = "ACTUAL_AND_EFFORT",
     ACTUAL = "ACTUAL",
-    ACTUAL_VALUE = "ACTUAL_VALUE",
+    ACTUAL_VALUE_1 = "ACTUAL_VALUE_1",
+    ACTUAL_VALUE_2 = "ACTUAL_VALUE_2",
     EFFORT_VALUE = "EFFORT_VALUE",
     INDIVIDUALS = "INDIVIDUALS",
     MOVES_LINE_1 = "MOVES_LINE_1",
@@ -164,7 +165,9 @@ export interface ACTUAL {
     kind: ASTKinds.ACTUAL;
     actual: ACTUAL_VALUE;
 }
-export type ACTUAL_VALUE = string;
+export type ACTUAL_VALUE = ACTUAL_VALUE_1 | ACTUAL_VALUE_2;
+export type ACTUAL_VALUE_1 = string;
+export type ACTUAL_VALUE_2 = string;
 export type EFFORT_VALUE = string;
 export type INDIVIDUALS = string;
 export type MOVES_LINE = MOVES_LINE_1 | MOVES_LINE_2 | MOVES_LINE_3 | MOVES_LINE_4;
@@ -490,7 +493,16 @@ export class Parser {
             });
     }
     public matchACTUAL_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ACTUAL_VALUE> {
+        return this.choice<ACTUAL_VALUE>([
+            () => this.matchACTUAL_VALUE_1($$dpth + 1, $$cr),
+            () => this.matchACTUAL_VALUE_2($$dpth + 1, $$cr),
+        ]);
+    }
+    public matchACTUAL_VALUE_1($$dpth: number, $$cr?: ErrorTracker): Nullable<ACTUAL_VALUE_1> {
         return this.regexAccept(String.raw`(?:[1-9][0-9]*)`, "", $$dpth + 1, $$cr);
+    }
+    public matchACTUAL_VALUE_2($$dpth: number, $$cr?: ErrorTracker): Nullable<ACTUAL_VALUE_2> {
+        return this.regexAccept(String.raw`(?:x)`, "", $$dpth + 1, $$cr);
     }
     public matchEFFORT_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<EFFORT_VALUE> {
         return this.regexAccept(String.raw`(?:[1-9][0-9]*)`, "", $$dpth + 1, $$cr);

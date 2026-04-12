@@ -42,7 +42,7 @@ STATS             := h=STAT '-' a=STAT '-' b=STAT '-' c=STAT '-' d=STAT '-' s=ST
 STAT              := ACTUAL_AND_EFFORT | ACTUAL
 ACTUAL_AND_EFFORT := actual=ACTUAL_VALUE '\(' effort=EFFORT_VALUE '\)'
 ACTUAL            := actual=ACTUAL_VALUE
-ACTUAL_VALUE      := '[1-9][0-9]*'
+ACTUAL_VALUE      := '[1-9][0-9]*' | 'x'
 EFFORT_VALUE      := '[1-9][0-9]*'
 INDIVIDUALS       := '[HABCDS0-9, ]+' // TODO: ちゃんとパースする
 
