@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0
+
+### Changed
+
+- **BREAKING**: Rename `性格` to `性格補正` (#10)
+
+### Removed
+
+- **BREAKING**: IVs notation (e.g. `*C0,D0`) has been removed and now causes a parse error (#10)
+
 ## 0.5.0
 
 ### Fixed
