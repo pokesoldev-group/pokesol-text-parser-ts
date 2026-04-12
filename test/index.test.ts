@@ -2,29 +2,29 @@ import { parse } from "../src/index.js";
 
 describe("parse", () => {
   const expected = {
-    pokemonName: "カイリュー",
-    itemName: "あおぞらプレート",
-    abilityName: "マルチスケイル",
-    preMegaAbilityName: null,
+    pokemonName: "メガガブリアス",
+    itemName: "ガブリアスナイト",
+    abilityName: "すなのちから",
+    preMegaAbilityName: "さめはだ",
     terastalName: "ステラ",
-    natureName: "さみしがり",
+    natureName: "ようき",
     evs: {
-      hp: 0,
-      attack: 32,
-      defense: 32,
-      specialAttack: 0,
-      specialDefense: 0,
-      speed: 2,
+      hp: 10,
+      attack: 10,
+      defense: 10,
+      specialAttack: 10,
+      specialDefense: 10,
+      speed: 16,
     },
     actualValue: {
-      hp: 166,
-      attack: 204,
-      defense: 132,
-      specialAttack: 105,
-      specialDefense: 105,
-      speed: 101,
+      hp: 193,
+      attack: 200,
+      defense: 145,
+      specialAttack: 135,
+      specialDefense: 125,
+      speed: 140,
     },
-    moveNames: ["じしん", "りゅうのまい", "テラバースト", "けたぐり"],
+    moveNames: ["スケイルショット", "だいちのちから", "がんせきふうじ", "ステルスロック"],
   };
 
   test("with full values", () => {
@@ -34,140 +34,111 @@ describe("parse", () => {
 能力補正: ようき
 193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
 スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
-    expect(parse(pokesolText)).toEqual({
-      pokemonName: "メガガブリアス",
-      itemName: "ガブリアスナイト",
-      abilityName: "すなのちから",
-      preMegaAbilityName: "さめはだ",
-      terastalName: "ステラ",
-      natureName: "ようき",
-      evs: {
-        hp: 10,
-        attack: 10,
-        defense: 10,
-        specialAttack: 10,
-        specialDefense: 10,
-        speed: 16,
-      },
-      actualValue: {
-        hp: 193,
-        attack: 200,
-        defense: 145,
-        specialAttack: 135,
-        specialDefense: 125,
-        speed: 140,
-      },
-      moveNames: [
-        "スケイルショット",
-        "だいちのちから",
-        "がんせきふうじ",
-        "ステルスロック",
-      ],
-    });
+    expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("with whitespace", () => {
-    const pokesolText = `カイリュー   @   あおぞらプレート
+    const pokesolText = `メガガブリアス   @   ガブリアスナイト
 テラスタイプ  :   ステラ
-特性  :   マルチスケイル
-能力補正  :   さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん   /   りゅうのまい   /   テラバースト   /   けたぐり`;
+特性  :   すなのちから    (さめはだ)
+能力補正  :   ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット   /   だいちのちから   /   がんせきふうじ   /   ステルスロック`;
     expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("without whitespace", () => {
-    const pokesolText = `カイリュー@あおぞらプレート
+    const pokesolText = `メガガブリアス@ガブリアスナイト
 テラスタイプ:ステラ
-特性:マルチスケイル
-能力補正:さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん/りゅうのまい/テラバースト/けたぐり`;
+特性:すなのちから(さめはだ)
+能力補正:ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット/だいちのちから/がんせきふうじ/ステルスロック`;
     expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("with linebreaks", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 
 テラスタイプ: ステラ
 
-特性: マルチスケイル
+特性: すなのちから(さめはだ)
 
-能力補正: さみしがり
+能力補正: ようき
 
-166-204(32)-132(32)-105-105-101(2)
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
 
-じしん / りゅうのまい / テラバースト / けたぐり`;
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
 
     expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("without item", () => {
-    const pokesolText = `カイリュー
+    const pokesolText = `メガガブリアス
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({ ...expected, itemName: null });
   });
 
   test("without teratype", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
-テラスタイプ: 
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
+テラスタイプ:
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({ ...expected, terastalName: null });
   });
 
   test("without teratype line", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({ ...expected, terastalName: null });
   });
 
   test("without ability", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
 特性:
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
-    expect(parse(pokesolText)).toEqual({ ...expected, abilityName: null });
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
+    expect(parse(pokesolText)).toEqual({ ...expected, abilityName: null, preMegaAbilityName: null });
   });
 
   test("without pre-mega ability", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual(expected);
   });
 
   test("without nature", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
+特性: すなのちから(さめはだ)
 能力補正:
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({ ...expected, natureName: null });
   });
 
   test("without EV", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204-132-105-105-101
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193-200-145-135-125-140
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       evs: {
@@ -182,21 +153,21 @@ describe("parse", () => {
   });
 
   test("with partial moves", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん`;
-    expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["じしん"] });
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット`;
+    expect(parse(pokesolText)).toEqual({ ...expected, moveNames: ["スケイルショット"] });
   });
 
   test("with moves with alphabet", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
 ＤＤラリアット`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
@@ -205,12 +176,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with kanji", () => {
-    const pokesolText = `バドレックス(黒) @ あおぞらプレート
+    const pokesolText = `バドレックス(黒) @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "バドレックス(黒)",
@@ -218,12 +189,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with symbol (♂)", () => {
-    const pokesolText = `パフュートン(♂) @ あおぞらプレート
+    const pokesolText = `パフュートン(♂) @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "パフュートン(♂)",
@@ -231,12 +202,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with symbol (・)", () => {
-    const pokesolText = `カプ・コケコ @ あおぞらプレート
+    const pokesolText = `カプ・コケコ @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "カプ・コケコ",
@@ -244,12 +215,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with symbol (%)", () => {
-    const pokesolText = `ジガルデ(50%) @ あおぞらプレート
+    const pokesolText = `ジガルデ(50%) @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ジガルデ(50%)",
@@ -257,12 +228,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with number", () => {
-    const pokesolText = `ジガルデ(10%) @ あおぞらプレート
+    const pokesolText = `ジガルデ(10%) @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ジガルデ(10%)",
@@ -270,12 +241,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with full-width number", () => {
-    const pokesolText = `ポリゴン２@ あおぞらプレート
+    const pokesolText = `ポリゴン２@ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ポリゴン２",
@@ -283,12 +254,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with alphabet", () => {
-    const pokesolText = `ミュウツー(メガX) @ あおぞらプレート
+    const pokesolText = `ミュウツー(メガX) @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ミュウツー(メガX)",
@@ -296,12 +267,12 @@ describe("parse", () => {
   });
 
   test("with pokemon name with full-width alphabet", () => {
-    const pokesolText = `ポリゴンＺ @ あおぞらプレート
+    const pokesolText = `ポリゴンＺ @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       pokemonName: "ポリゴンＺ",
@@ -309,10 +280,10 @@ describe("parse", () => {
   });
 
   test("without stats and moves line", () => {
-    const pokesolText = `カイリュー
+    const pokesolText = `メガガブリアス
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       itemName: null,
@@ -337,11 +308,11 @@ describe("parse", () => {
   });
 
   test("without stats line", () => {
-    const pokesolText = `カイリュー
+    const pokesolText = `メガガブリアス
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-じしん / りゅうのまい / テラバースト / けたぐり`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
     expect(parse(pokesolText)).toEqual({
       ...expected,
       itemName: null,
@@ -365,24 +336,24 @@ describe("parse", () => {
   });
 
   test("without moves line", () => {
-    const pokesolText = `カイリュー @ あおぞらプレート
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: マルチスケイル
-能力補正: さみしがり
-166-204(32)-132(32)-105-105-101(2)`;
+特性: すなのちから(さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)`;
     expect(parse(pokesolText)).toEqual({ ...expected, moveNames: [] });
   });
 
   test("with comments", () => {
     const pokesolText = `
 // comment
-カイリュー @ あおぞらプレート // comment
+メガガブリアス @ ガブリアスナイト // comment
 テラスタイプ: ステラ          // comment
-特性: マルチスケイル          // comment
-能力補正: さみしがり          // comment
+特性: すなのちから(さめはだ)          // comment
+能力補正: ようき          // comment
 // comment
-166-204(32)-132(32)-105-105-101(2)    // comment
-じしん / りゅうのまい / テラバースト / けたぐり// comment
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)    // comment
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック// comment
 // comment
 `;
     expect(parse(pokesolText)).toEqual(expected);
