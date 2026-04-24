@@ -4,8 +4,7 @@ describe("parse", () => {
   const expected = {
     pokemonName: "メガガブリアス",
     itemName: "ガブリアスナイト",
-    abilityName: "すなのちから",
-    preMegaAbilityName: "さめはだ",
+    abilityNames: ["すなのちから", "さめはだ"],
     terastalName: "ステラ",
     natureName: "ようき",
     evs: {
@@ -109,17 +108,17 @@ describe("parse", () => {
 能力補正: ようき
 193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
 スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
-    expect(parse(pokesolText)).toEqual({ ...expected, abilityName: null, preMegaAbilityName: null });
+    expect(parse(pokesolText)).toEqual({ ...expected, abilityNames: [] });
   });
 
-  test("without pre-mega ability", () => {
+  test("without pre-evolution ability", () => {
     const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
-特性: すなのちから(さめはだ)
+特性: すなのちから
 能力補正: ようき
 193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
 スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
-    expect(parse(pokesolText)).toEqual(expected);
+    expect(parse(pokesolText)).toEqual({ ...expected, abilityNames: ["すなのちから"] });
   });
 
   test("without nature", () => {

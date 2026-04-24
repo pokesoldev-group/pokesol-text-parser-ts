@@ -16,7 +16,7 @@
 * TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 * TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 * // 3 行目
-* ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? _ preMega={ '\(' body=ABILITY_VALUE '\)' }?
+* ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? _ preEvolution={ '\(' body=ABILITY_VALUE '\)' }?
 * ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
 * // 4 行目
 * NATURE_LINE  := '能力補正' _ ':' _ nature=NATURE_VALUE?
@@ -124,7 +124,7 @@ export type TERATYPE_VALUE = string;
 export interface ABILITY_LINE {
     kind: ASTKinds.ABILITY_LINE;
     ability: Nullable<ABILITY_VALUE>;
-    preMega: Nullable<ABILITY_LINE_$0>;
+    preEvolution: Nullable<ABILITY_LINE_$0>;
 }
 export interface ABILITY_LINE_$0 {
     kind: ASTKinds.ABILITY_LINE_$0;
@@ -349,7 +349,7 @@ export class Parser {
         return this.run<ABILITY_LINE>($$dpth,
             () => {
                 let $scope$ability: Nullable<Nullable<ABILITY_VALUE>>;
-                let $scope$preMega: Nullable<Nullable<ABILITY_LINE_$0>>;
+                let $scope$preEvolution: Nullable<Nullable<ABILITY_LINE_$0>>;
                 let $$res: Nullable<ABILITY_LINE> = null;
                 if (true
                     && this.regexAccept(String.raw`(?:特性)`, "", $$dpth + 1, $$cr) !== null
@@ -358,9 +358,9 @@ export class Parser {
                     && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$ability = this.matchABILITY_VALUE($$dpth + 1, $$cr)) || true)
                     && this.match_($$dpth + 1, $$cr) !== null
-                    && (($scope$preMega = this.matchABILITY_LINE_$0($$dpth + 1, $$cr)) || true)
+                    && (($scope$preEvolution = this.matchABILITY_LINE_$0($$dpth + 1, $$cr)) || true)
                 ) {
-                    $$res = {kind: ASTKinds.ABILITY_LINE, ability: $scope$ability, preMega: $scope$preMega};
+                    $$res = {kind: ASTKinds.ABILITY_LINE, ability: $scope$ability, preEvolution: $scope$preEvolution};
                 }
                 return $$res;
             });

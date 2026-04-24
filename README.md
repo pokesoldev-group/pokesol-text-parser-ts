@@ -23,8 +23,7 @@ console.dir(parse(pokesolText), { depth: null })
 {
   pokemonName: 'メガガブリアス',
   itemName: 'ガブリアスナイト',
-  abilityName: 'すなのちから',
-  preMegaAbilityName: 'さめはだ',
+  abilityNames: [ 'すなのちから', 'さめはだ' ],
   terastalName: null,
   natureName: 'ようき',
   evs: {
