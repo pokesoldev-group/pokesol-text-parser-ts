@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1
+
+### Fixed
+
+- Support items containing "XYZ" (e.g. `リザードナイトX`) (#14)
+
 ## 1.1.0
 
 ### Changed
