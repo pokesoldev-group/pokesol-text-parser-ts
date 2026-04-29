@@ -54,4 +54,5 @@ console.dir(parse(pokesolText), { depth: null })
 - Write CHANGELOG.md
 - `git commit -m "add changelog for v*.*.*"`
 - `pnpm version {major,minor,patch}`
+- `git push --follow-tags`
 - `pnpm publish`
