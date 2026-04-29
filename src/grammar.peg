@@ -12,7 +12,7 @@ POKESOL_TEXT :=
 POKEMON_AND_ITEM_LINE := pokemon=POKEMON_VALUE _ '@' _ item=ITEM_VALUE
 POKEMON_LINE          := pokemon=POKEMON_VALUE
 POKEMON_VALUE         := '[0-9０-９a-zA-ZＡ-Ｚぁ-んァ-ヶー一-龠・()♂♀%]+'
-ITEM_VALUE            := '[ぁ-んァ-ヶー]+'
+ITEM_VALUE            := '[ぁ-んァ-ヶーＸＹＺ]+'
 
 
 // 2 行目
