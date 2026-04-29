@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+### Changed
+
+- **BREAKING**: Consolidate ability fields into `abilityNames: string[]`
+
 ## 1.0.0
 
 ### Changed
