@@ -11,7 +11,7 @@
 * POKEMON_AND_ITEM_LINE := pokemon=POKEMON_VALUE _ '@' _ item=ITEM_VALUE
 * POKEMON_LINE          := pokemon=POKEMON_VALUE
 * POKEMON_VALUE         := '[0-9０-９a-zA-ZＡ-Ｚぁ-んァ-ヶー一-龠・()♂♀%]+'
-* ITEM_VALUE            := '[ぁ-んァ-ヶー]+'
+* ITEM_VALUE            := '[ぁ-んァ-ヶーＸＹＺXYZ]+'
 * // 2 行目
 * TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 * TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
@@ -323,7 +323,7 @@ export class Parser {
         return this.regexAccept(String.raw`(?:[0-9０-９a-zA-ZＡ-Ｚぁ-んァ-ヶー一-龠・()♂♀%]+)`, "", $$dpth + 1, $$cr);
     }
     public matchITEM_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ITEM_VALUE> {
-        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶー]+)`, "", $$dpth + 1, $$cr);
+        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶーＸＹＺXYZ]+)`, "", $$dpth + 1, $$cr);
     }
     public matchTERATYPE_LINE($$dpth: number, $$cr?: ErrorTracker): Nullable<TERATYPE_LINE> {
         return this.run<TERATYPE_LINE>($$dpth,
