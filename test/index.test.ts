@@ -121,6 +121,43 @@ describe("parse", () => {
     expect(parse(pokesolText)).toEqual({ ...expected, abilityNames: ["すなのちから"] });
   });
 
+  test("without current ability", () => {
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
+テラスタイプ: ステラ
+特性: (さめはだ)
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
+    expect(parse(pokesolText)).toEqual({ ...expected, abilityNames: [null, "さめはだ"] });
+  });
+
+  test.each([
+    { abilities: "()", expected: [null, null] },
+    { abilities: "すなのちから()", expected: ["すなのちから", null] },
+    {
+      abilities: "すなのちから()()",
+      expected: ["すなのちから", null, null],
+    },
+    {
+      abilities: "すなのちから()(さめはだ)",
+      expected: ["すなのちから", null, "さめはだ"],
+    },
+    { abilities: "()(さめはだ)", expected: [null, null, "さめはだ"] },
+    { abilities: "()()", expected: [null, null, null] },
+    {
+      abilities: "すなのちから()(さめはだ)()(ふゆう)",
+      expected: ["すなのちから", null, "さめはだ", null, "ふゆう"],
+    },
+  ])("with ability slots: $abilities", ({ abilities, expected: abilityNames }) => {
+    const pokesolText = `メガガブリアス @ ガブリアスナイト
+テラスタイプ: ステラ
+特性: ${abilities}
+能力補正: ようき
+193(10)-200(10)-145(10)-135(10)-125(10)-140(16)
+スケイルショット / だいちのちから / がんせきふうじ / ステルスロック`;
+    expect(parse(pokesolText)).toEqual({ ...expected, abilityNames });
+  });
+
   test("without nature", () => {
     const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
