@@ -16,10 +16,9 @@
 * TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 * TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 * // 3 行目
-* ABILITY_LINE       := '特性' _ ':' _ ability=ABILITY_VALUE? _ previousAbilities=PREVIOUS_ABILITY*
-* PREVIOUS_ABILITY   := '\(' body=ABILITY_SLOT_VALUE '\)'
-* ABILITY_VALUE      := '[ぁ-んァ-ヶー]+'
-* ABILITY_SLOT_VALUE := '[ぁ-んァ-ヶー]*'
+* ABILITY_LINE     := '特性' _ ':' _ ability=ABILITY_VALUE? _ previousAbilities=PREVIOUS_ABILITY*
+* PREVIOUS_ABILITY := '\(' body=ABILITY_VALUE? '\)'
+* ABILITY_VALUE    := '[ぁ-んァ-ヶー]+'
 * // 4 行目
 * NATURE_LINE  := '能力補正' _ ':' _ nature=NATURE_VALUE?
 * NATURE_VALUE := '[ぁ-ん]+'
@@ -62,7 +61,6 @@ export enum ASTKinds {
     ABILITY_LINE = "ABILITY_LINE",
     PREVIOUS_ABILITY = "PREVIOUS_ABILITY",
     ABILITY_VALUE = "ABILITY_VALUE",
-    ABILITY_SLOT_VALUE = "ABILITY_SLOT_VALUE",
     NATURE_LINE = "NATURE_LINE",
     NATURE_VALUE = "NATURE_VALUE",
     STATS_LINE = "STATS_LINE",
@@ -131,10 +129,9 @@ export interface ABILITY_LINE {
 }
 export interface PREVIOUS_ABILITY {
     kind: ASTKinds.PREVIOUS_ABILITY;
-    body: ABILITY_SLOT_VALUE;
+    body: Nullable<ABILITY_VALUE>;
 }
 export type ABILITY_VALUE = string;
-export type ABILITY_SLOT_VALUE = string;
 export interface NATURE_LINE {
     kind: ASTKinds.NATURE_LINE;
     nature: Nullable<NATURE_VALUE>;
@@ -372,11 +369,11 @@ export class Parser {
     public matchPREVIOUS_ABILITY($$dpth: number, $$cr?: ErrorTracker): Nullable<PREVIOUS_ABILITY> {
         return this.run<PREVIOUS_ABILITY>($$dpth,
             () => {
-                let $scope$body: Nullable<ABILITY_SLOT_VALUE>;
+                let $scope$body: Nullable<Nullable<ABILITY_VALUE>>;
                 let $$res: Nullable<PREVIOUS_ABILITY> = null;
                 if (true
                     && this.regexAccept(String.raw`(?:\()`, "", $$dpth + 1, $$cr) !== null
-                    && ($scope$body = this.matchABILITY_SLOT_VALUE($$dpth + 1, $$cr)) !== null
+                    && (($scope$body = this.matchABILITY_VALUE($$dpth + 1, $$cr)) || true)
                     && this.regexAccept(String.raw`(?:\))`, "", $$dpth + 1, $$cr) !== null
                 ) {
                     $$res = {kind: ASTKinds.PREVIOUS_ABILITY, body: $scope$body};
@@ -386,9 +383,6 @@ export class Parser {
     }
     public matchABILITY_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ABILITY_VALUE> {
         return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶー]+)`, "", $$dpth + 1, $$cr);
-    }
-    public matchABILITY_SLOT_VALUE($$dpth: number, $$cr?: ErrorTracker): Nullable<ABILITY_SLOT_VALUE> {
-        return this.regexAccept(String.raw`(?:[ぁ-んァ-ヶー]*)`, "", $$dpth + 1, $$cr);
     }
     public matchNATURE_LINE($$dpth: number, $$cr?: ErrorTracker): Nullable<NATURE_LINE> {
         return this.run<NATURE_LINE>($$dpth,

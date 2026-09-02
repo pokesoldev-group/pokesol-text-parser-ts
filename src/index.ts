@@ -45,7 +45,7 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
   const terastalName = result.ast.line2?.body.teratype || null;
   const currentAbility = result.ast.line3.ability;
   const previousAbilities = result.ast.line3.previousAbilities.map(
-    ({ body }) => body || null
+    ({ body }) => body
   );
   const abilityNames =
     previousAbilities.length > 0

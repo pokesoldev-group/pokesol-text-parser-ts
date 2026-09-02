@@ -148,7 +148,7 @@ describe("parse", () => {
       abilities: "すなのちから()(さめはだ)()(ふゆう)",
       expected: ["すなのちから", null, "さめはだ", null, "ふゆう"],
     },
-  ])("with ability slots: $abilities", ({ abilities, expected: abilityNames }) => {
+  ])("with multiple abilities: $abilities", ({ abilities, expected: abilityNames }) => {
     const pokesolText = `メガガブリアス @ ガブリアスナイト
 テラスタイプ: ステラ
 特性: ${abilities}
