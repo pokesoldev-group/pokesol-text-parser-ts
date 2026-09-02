@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0
+
+### Changed
+
+- **BREAKING**: `abilityNames` is now `(string | null)[]`; empty ability slots are preserved as `null` instead of being dropped (#15)
+
+### Added
+
+- Support any number of previous abilities (e.g. `特性: すなのちから()(さめはだ)()(ふゆう)`) (#15)
+
+### Fixed
+
+- Empty ability slots (e.g. `特性: ()`) no longer cause a parse error (#15)
+
 ## 1.1.1
 
 ### Fixed
