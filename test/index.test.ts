@@ -132,8 +132,14 @@ describe("parse", () => {
   });
 
   test.each([
-    { abilities: "()", expected: [null, null] },
-    { abilities: "すなのちから()", expected: ["すなのちから", null] },
+    {
+      abilities: "()",
+      expected: [null, null]
+    },
+    {
+      abilities: "すなのちから()",
+      expected: ["すなのちから", null]
+    },
     {
       abilities: "すなのちから()()",
       expected: ["すなのちから", null, null],
@@ -142,8 +148,14 @@ describe("parse", () => {
       abilities: "すなのちから()(さめはだ)",
       expected: ["すなのちから", null, "さめはだ"],
     },
-    { abilities: "()(さめはだ)", expected: [null, null, "さめはだ"] },
-    { abilities: "()()", expected: [null, null, null] },
+    {
+      abilities: "()(さめはだ)",
+      expected: [null, null, "さめはだ"]
+    },
+    {
+      abilities: "()()",
+      expected: [null, null, null]
+    },
     {
       abilities: "すなのちから()(さめはだ)()(ふゆう)",
       expected: ["すなのちから", null, "さめはだ", null, "ふゆう"],
