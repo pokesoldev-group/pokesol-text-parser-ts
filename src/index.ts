@@ -12,7 +12,7 @@ type ActualValue = {
 export type PokesolTextParseReult = {
   pokemonName: string | null;
   itemName: string | null;
-  abilityNames: string[];
+  abilityNames: (string | null)[];
   terastalName: string | null;
   natureName: string | null;
   evs: {
@@ -43,10 +43,16 @@ export const parse = (pokesolText: string): PokesolTextParseReult => {
       : null;
 
   const terastalName = result.ast.line2?.body.teratype || null;
-  const abilityNames = [
-    result.ast.line3.ability,
-    result.ast.line3.preEvolution?.body,
-  ].filter((v): v is string => v != null);
+  const currentAbility = result.ast.line3.ability;
+  const previousAbilities = result.ast.line3.previousAbilities.map(
+    ({ body }) => body
+  );
+  const abilityNames =
+    previousAbilities.length > 0
+      ? [currentAbility, ...previousAbilities]
+      : currentAbility !== null
+        ? [currentAbility]
+        : [];
   const natureName = result.ast.line4.nature || null;
 
   const evs = {

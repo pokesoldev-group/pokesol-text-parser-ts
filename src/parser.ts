@@ -16,8 +16,9 @@
 * TERATYPE_LINE  := 'テラスタイプ' _ ':' _ teratype=TERATYPE_VALUE
 * TERATYPE_VALUE := '[ぁ-んァ-ヶー]*'
 * // 3 行目
-* ABILITY_LINE  := '特性' _ ':' _ ability=ABILITY_VALUE? _ preEvolution={ '\(' body=ABILITY_VALUE '\)' }?
-* ABILITY_VALUE := '[ぁ-んァ-ヶー]+'
+* ABILITY_LINE     := '特性' _ ':' _ ability=ABILITY_VALUE? _ previousAbilities=PREVIOUS_ABILITY*
+* PREVIOUS_ABILITY := '\(' body=ABILITY_VALUE? '\)'
+* ABILITY_VALUE    := '[ぁ-んァ-ヶー]+'
 * // 4 行目
 * NATURE_LINE  := '能力補正' _ ':' _ nature=NATURE_VALUE?
 * NATURE_VALUE := '[ぁ-ん]+'
@@ -58,7 +59,7 @@ export enum ASTKinds {
     TERATYPE_LINE = "TERATYPE_LINE",
     TERATYPE_VALUE = "TERATYPE_VALUE",
     ABILITY_LINE = "ABILITY_LINE",
-    ABILITY_LINE_$0 = "ABILITY_LINE_$0",
+    PREVIOUS_ABILITY = "PREVIOUS_ABILITY",
     ABILITY_VALUE = "ABILITY_VALUE",
     NATURE_LINE = "NATURE_LINE",
     NATURE_VALUE = "NATURE_VALUE",
@@ -124,11 +125,11 @@ export type TERATYPE_VALUE = string;
 export interface ABILITY_LINE {
     kind: ASTKinds.ABILITY_LINE;
     ability: Nullable<ABILITY_VALUE>;
-    preEvolution: Nullable<ABILITY_LINE_$0>;
+    previousAbilities: PREVIOUS_ABILITY[];
 }
-export interface ABILITY_LINE_$0 {
-    kind: ASTKinds.ABILITY_LINE_$0;
-    body: ABILITY_VALUE;
+export interface PREVIOUS_ABILITY {
+    kind: ASTKinds.PREVIOUS_ABILITY;
+    body: Nullable<ABILITY_VALUE>;
 }
 export type ABILITY_VALUE = string;
 export interface NATURE_LINE {
@@ -349,7 +350,7 @@ export class Parser {
         return this.run<ABILITY_LINE>($$dpth,
             () => {
                 let $scope$ability: Nullable<Nullable<ABILITY_VALUE>>;
-                let $scope$preEvolution: Nullable<Nullable<ABILITY_LINE_$0>>;
+                let $scope$previousAbilities: Nullable<PREVIOUS_ABILITY[]>;
                 let $$res: Nullable<ABILITY_LINE> = null;
                 if (true
                     && this.regexAccept(String.raw`(?:特性)`, "", $$dpth + 1, $$cr) !== null
@@ -358,24 +359,24 @@ export class Parser {
                     && this.match_($$dpth + 1, $$cr) !== null
                     && (($scope$ability = this.matchABILITY_VALUE($$dpth + 1, $$cr)) || true)
                     && this.match_($$dpth + 1, $$cr) !== null
-                    && (($scope$preEvolution = this.matchABILITY_LINE_$0($$dpth + 1, $$cr)) || true)
+                    && ($scope$previousAbilities = this.loop<PREVIOUS_ABILITY>(() => this.matchPREVIOUS_ABILITY($$dpth + 1, $$cr), 0, -1)) !== null
                 ) {
-                    $$res = {kind: ASTKinds.ABILITY_LINE, ability: $scope$ability, preEvolution: $scope$preEvolution};
+                    $$res = {kind: ASTKinds.ABILITY_LINE, ability: $scope$ability, previousAbilities: $scope$previousAbilities};
                 }
                 return $$res;
             });
     }
-    public matchABILITY_LINE_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<ABILITY_LINE_$0> {
-        return this.run<ABILITY_LINE_$0>($$dpth,
+    public matchPREVIOUS_ABILITY($$dpth: number, $$cr?: ErrorTracker): Nullable<PREVIOUS_ABILITY> {
+        return this.run<PREVIOUS_ABILITY>($$dpth,
             () => {
-                let $scope$body: Nullable<ABILITY_VALUE>;
-                let $$res: Nullable<ABILITY_LINE_$0> = null;
+                let $scope$body: Nullable<Nullable<ABILITY_VALUE>>;
+                let $$res: Nullable<PREVIOUS_ABILITY> = null;
                 if (true
                     && this.regexAccept(String.raw`(?:\()`, "", $$dpth + 1, $$cr) !== null
-                    && ($scope$body = this.matchABILITY_VALUE($$dpth + 1, $$cr)) !== null
+                    && (($scope$body = this.matchABILITY_VALUE($$dpth + 1, $$cr)) || true)
                     && this.regexAccept(String.raw`(?:\))`, "", $$dpth + 1, $$cr) !== null
                 ) {
-                    $$res = {kind: ASTKinds.ABILITY_LINE_$0, body: $scope$body};
+                    $$res = {kind: ASTKinds.PREVIOUS_ABILITY, body: $scope$body};
                 }
                 return $$res;
             });
