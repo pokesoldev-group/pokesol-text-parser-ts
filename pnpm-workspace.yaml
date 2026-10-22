@@ -1,4 +1,3 @@
-onlyBuiltDependencies: []
-ignoredBuiltDependencies:
-  - esbuild
 minimumReleaseAge: 10080
+minimumReleaseAgeIgnoreMissingTime: false
+trustPolicy: no-downgrade
